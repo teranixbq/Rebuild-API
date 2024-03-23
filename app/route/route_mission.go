@@ -8,21 +8,26 @@ import (
 	"recything/features/mission/repository"
 	"recything/features/mission/service"
 
-	achievement"recything/features/achievement/repository"
+	achievement "recything/features/achievement/repository"
 
 	"recything/utils/jwt"
 
+	"recything/utils/storage"
+
 	"github.com/labstack/echo/v4"
+	supabase "github.com/supabase-community/storage-go"
 	"gorm.io/gorm"
 )
 
-func RouteMissions(e *echo.Group, db *gorm.DB) {
-	adminRepository := admin.NewAdminRepository(db)
+func RouteMissions(e *echo.Group, db *gorm.DB, sb *supabase.Client) {
+	supabaseConfig := storage.NewStorage(sb)
+
+	adminRepository := admin.NewAdminRepository(db, supabaseConfig)
 	achievementRepository := achievement.NewAchievementRepository(db)
-	userRepository := user.NewUserRepository(db,achievementRepository)
-	
-	missionRepository := repository.NewMissionRepository(db)
-	missionService := service.NewMissionService(missionRepository, adminRepository, userRepository)
+	userRepository := user.NewUserRepository(db, achievementRepository)
+
+	missionRepository := repository.NewMissionRepository(db, supabaseConfig)
+	missionService := service.NewMissionService(missionRepository, adminRepository, userRepository, supabaseConfig)
 	missionHandler := handler.NewMissionHandler(missionService)
 
 	admin := e.Group("/admins/manage/missions", jwt.JWTMiddleware())
@@ -33,7 +38,7 @@ func RouteMissions(e *echo.Group, db *gorm.DB) {
 	admin.GET("/:id", missionHandler.FindById)
 	admin.PUT("/:id", missionHandler.UpdateMission)
 	// admin.PUT("/:id/stages", missionHandler.UpdateMissionStage)
-	
+
 	admin.GET("/approvals", missionHandler.GetAllMissionApproval)
 	admin.GET("/approvals/:id", missionHandler.GetMissionApprovalById)
 	admin.PUT("/approvals/:id", missionHandler.UpdateStatusApprovalMission)

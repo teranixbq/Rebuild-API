@@ -15,14 +15,18 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
+	supabase "github.com/supabase-community/storage-go"
+	"recything/utils/storage"
 )
 
-func RouteDailyPoint(e *echo.Group, db *gorm.DB) {
-	missionRepo := missionRepository.NewMissionRepository(db)
+func RouteDailyPoint(e *echo.Group, db *gorm.DB,sb *supabase.Client) {
+	supabaseConfig := storage.NewStorage(sb)
+
+	missionRepo := missionRepository.NewMissionRepository(db,supabaseConfig)
 	trashRepo := trashExRepository.NewTrashExchangeRepository(db)
 	achievementRepository := achievement.NewAchievementRepository(db)
 	userRepo := userRepository.NewUserRepository(db,achievementRepository)
-	voucherRepo := voucherRepository.NewVoucherRepository(db)
+	voucherRepo := voucherRepository.NewVoucherRepository(db,supabaseConfig)
 	
 	dailyRepo := repository.NewDailyPointRepository(db, missionRepo, trashRepo, userRepo, voucherRepo)
 	dailyServ := service.NewDailyPointService(dailyRepo)

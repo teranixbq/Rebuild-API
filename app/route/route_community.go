@@ -12,15 +12,19 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
+	supabase "github.com/supabase-community/storage-go"
+	"recything/utils/storage"
 )
 
-func RouteCommunity(e *echo.Group, db *gorm.DB) {
+func RouteCommunity(e *echo.Group, db *gorm.DB,sb *supabase.Client) {
+	supabaseConfig := storage.NewStorage(sb)
+
 	achievementRepository := achievement.NewAchievementRepository(db)
 	userRepository :=  userrep.NewUserRepository(db,achievementRepository)
 	userService := userserv.NewUserService(userRepository)
 	userHandler := userhand.NewUserHandlers(userService)
 
-	communityRepo := repository.NewCommunityRepository(db)
+	communityRepo := repository.NewCommunityRepository(db,supabaseConfig)
 	communityService := service.NewCommunityService(communityRepo)
 	communityHandler := handler.NewCommunityHandler(communityService)
 

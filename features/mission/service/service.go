@@ -20,18 +20,19 @@ type missionService struct {
 	MissionRepo entity.MissionRepositoryInterface
 	AdminRepo   admin.AdminRepositoryInterface
 	UserRepo    user.UsersRepositoryInterface
+	sb          storage.StorageInterface
 }
 
-func NewMissionService(missionRepo entity.MissionRepositoryInterface, adminRepo admin.AdminRepositoryInterface, userRepo user.UsersRepositoryInterface) entity.MissionServiceInterface {
+func NewMissionService(missionRepo entity.MissionRepositoryInterface, adminRepo admin.AdminRepositoryInterface, userRepo user.UsersRepositoryInterface, sb storage.StorageInterface) entity.MissionServiceInterface {
 	return &missionService{
 		MissionRepo: missionRepo,
 		AdminRepo:   adminRepo,
 		UserRepo:    userRepo,
+		sb:          sb,
 	}
 }
 
 func (ms *missionService) CreateMission(image *multipart.FileHeader, data entity.Mission) error {
-
 
 	errEmpty := validation.CheckDataEmpty(data.Title, data.Description, data.StartDate, data.EndDate, data.Point, data.DescriptionStage, data.TitleStage)
 	if errEmpty != nil {
@@ -43,7 +44,7 @@ func (ms *missionService) CreateMission(image *multipart.FileHeader, data entity
 		return err
 	}
 
-	imageURL, errUpload := storage.UploadThumbnail(image)
+	imageURL, errUpload := ms.sb.Upload(image)
 	if errUpload != nil {
 		return err
 	}
@@ -117,7 +118,7 @@ func (ms *missionService) UpdateMission(image *multipart.FileHeader, missionID s
 	}
 
 	if image != nil {
-		newImageURL, errUpload := storage.UploadThumbnail(image)
+		newImageURL, errUpload := ms.sb.Upload(image)
 		if errUpload != nil {
 			return err
 		}
@@ -290,7 +291,7 @@ func (ms *missionService) UpdateStatusMissionApproval(UploadMissionTaskID, statu
 
 	user, err := ms.UserRepo.GetById(approv.UserID)
 	if err != nil {
-		return err	
+		return err
 	}
 
 	if status == constanta.DISETUJUI {

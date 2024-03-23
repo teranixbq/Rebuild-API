@@ -2,10 +2,11 @@ package route
 
 import (
 	"github.com/labstack/echo/v4"
+	supabase "github.com/supabase-community/storage-go"
 	"gorm.io/gorm"
 )
 
-func New(e *echo.Echo, db *gorm.DB) {
+func New(e *echo.Echo, db *gorm.DB, sb *supabase.Client) {
 	base := e.Group("")
 	loginPage := e.Group("/")
 	user := e.Group("/users")
@@ -14,21 +15,20 @@ func New(e *echo.Echo, db *gorm.DB) {
 	faq := e.Group("/faq")
 	recybot := e.Group("/recybot")
 
-
 	RouteLoginPage(loginPage, db)
 	RouteUser(user, db)
-	RouteReport(report, db)
-	RouteAdmin(admin, db)
-	RouteArticle(base, db)
+	RouteReport(report, db, sb)
+	RouteAdmin(admin, db, sb)
+	RouteArticle(base, db, sb)
 	RouteDropPoint(base, db)
 	RouteFaqs(faq, db)
 	RouteRecybot(recybot, db)
 	RouteAchievement(base, db)
-	RouteVoucher(base, db)
-	RouteMissions(base, db)
-	RouteDailyPoint(user,db)
-	RouteTrash(base,db)
+	RouteVoucher(base, db, sb)
+	RouteMissions(base, db, sb)
+	RouteDailyPoint(user, db, sb)
+	RouteTrash(base, db)
 	RouteTrashExchange(admin, db)
-	RouteCommunity(base, db)
+	RouteCommunity(base, db, sb)
 	RouteDashboard(base, db)
 }

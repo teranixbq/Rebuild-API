@@ -20,11 +20,13 @@ import (
 
 type MissionRepository struct {
 	db *gorm.DB
+	sb storage.StorageInterface
 }
 
-func NewMissionRepository(db *gorm.DB) entity.MissionRepositoryInterface {
+func NewMissionRepository(db *gorm.DB,sb storage.StorageInterface) entity.MissionRepositoryInterface {
 	return &MissionRepository{
 		db: db,
+		sb: sb,
 	}
 }
 
@@ -453,7 +455,7 @@ func (mr *MissionRepository) CreateUploadMissionTask(userID string, data entity.
 	}
 
 	for _, image := range images {
-		imageURL, uploadErr := storage.UploadProof(image)
+		imageURL, uploadErr := mr.sb.Upload(image)
 		if uploadErr != nil {
 			return entity.UploadMissionTaskCore{}, uploadErr
 		}
@@ -532,7 +534,7 @@ func (mr *MissionRepository) UpdateUploadMissionTask(id string, images []*multip
 
 	for _, image := range images {
 		Imagedata := entity.ImageUploadMissionCore{}
-		imageURL, uploadErr := storage.UploadProof(image)
+		imageURL, uploadErr := mr.sb.Upload(image)
 		if uploadErr != nil {
 			return uploadErr
 		}

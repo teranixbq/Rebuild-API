@@ -18,18 +18,20 @@ import (
 
 type voucherRepository struct {
 	db *gorm.DB
+	sb storage.StorageInterface
 }
 
-func NewVoucherRepository(db *gorm.DB) entity.VoucherRepositoryInterface {
+func NewVoucherRepository(db *gorm.DB,sb storage.StorageInterface) entity.VoucherRepositoryInterface {
 	return &voucherRepository{
 		db: db,
+		sb: sb,
 	}
 }
 
 func (vr *voucherRepository) Create(image *multipart.FileHeader, data entity.VoucherCore) error {
 	input := entity.CoreVoucherToModelVoucher(data)
 
-	imageURL, errUpload := storage.UploadThumbnail(image)
+	imageURL, errUpload := vr.sb.Upload(image)
 	if errUpload != nil {
 		return errUpload
 	}
@@ -131,7 +133,7 @@ func (vr *voucherRepository) Update(idVoucher string, image *multipart.FileHeade
 	}
 
 	if image != nil {
-		imageURL, errUpload := storage.UploadThumbnail(image)
+		imageURL, errUpload := vr.sb.Upload(image)
 		if errUpload != nil {
 			return errUpload
 		}

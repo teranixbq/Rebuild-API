@@ -10,12 +10,16 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
+	supabase "github.com/supabase-community/storage-go"
+	"recything/utils/storage"
 )
 
-func RouteVoucher(e *echo.Group, db *gorm.DB) {
+func RouteVoucher(e *echo.Group, db *gorm.DB,sb *supabase.Client) {
+	supabaseConfig := storage.NewStorage(sb)
+
 	achievementRepository := achievement.NewAchievementRepository(db)
 	userRepository := userRepo.NewUserRepository(db,achievementRepository)
-	voucherRepository := repository.NewVoucherRepository(db)
+	voucherRepository := repository.NewVoucherRepository(db,supabaseConfig)
 	voucherService := service.NewVoucherService(voucherRepository, userRepository)
 	voucherHandler := handler.NewVoucherHandler(voucherService)
 

@@ -7,6 +7,12 @@ const (
 	SUPERADMIN = "super_admin"
 )
 
+const (
+	URL_STORAGE = "https://cimxqffotlogzqvadisz.supabase.co/storage/v1"
+	URL         = URL_STORAGE + "/object/public/"
+)
+
+
 // Constanta For Success
 const (
 	SUCCESS_LOGIN       = "berhasil melakukan login"

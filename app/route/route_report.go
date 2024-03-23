@@ -8,11 +8,15 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
+	supabase "github.com/supabase-community/storage-go"
+	"recything/utils/storage"
 )
 
-func RouteReport(e *echo.Group, db *gorm.DB) {
+func RouteReport(e *echo.Group, db *gorm.DB,sb *supabase.Client) {
+	supabaseConfig := storage.NewStorage(sb)
+
 	// User
-	repotRepository := repository.NewReportRepository(db)
+	repotRepository := repository.NewReportRepository(db,supabaseConfig)
 	reportService := service.NewReportService(repotRepository)
 	reportHandler := handler.NewReportHandler(reportService)
 

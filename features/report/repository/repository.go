@@ -13,10 +13,14 @@ import (
 
 type reportRepository struct {
 	db *gorm.DB
+	sb storage.StorageInterface
 }
 
-func NewReportRepository(db *gorm.DB) entity.ReportRepositoryInterface {
-	return &reportRepository{db: db}
+func NewReportRepository(db *gorm.DB,sb storage.StorageInterface) entity.ReportRepositoryInterface {
+	return &reportRepository{
+		db: db,
+		sb: sb,
+	}
 }
 
 // ReadAllReport implements entity.ReportRepositoryInterface.
@@ -45,7 +49,7 @@ func (report *reportRepository) Insert(reportInput entity.ReportCore, images []*
 	}
 
 	for _, image := range images {
-		imageURL, uploadErr := storage.UploadProof(image)
+		imageURL, uploadErr := report.sb.Upload(image)
 		if uploadErr != nil {
 			return entity.ReportCore{}, uploadErr
 		}

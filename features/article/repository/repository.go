@@ -17,12 +17,14 @@ import (
 type articleRepository struct {
 	db            *gorm.DB
 	trashcategory trashcategory.TrashCategoryRepositoryInterface
+	sb storage.StorageInterface
 }
 
-func NewArticleRepository(db *gorm.DB, trashcategory trashcategory.TrashCategoryRepositoryInterface) entity.ArticleRepositoryInterface {
+func NewArticleRepository(db *gorm.DB, trashcategory trashcategory.TrashCategoryRepositoryInterface,sb storage.StorageInterface) entity.ArticleRepositoryInterface {
 	return &articleRepository{
 		db:            db,
 		trashcategory: trashcategory,
+		sb: sb,
 	}
 }
 
@@ -72,7 +74,7 @@ func (article *articleRepository) UpdateArticle(idArticle string, articleInput e
 	}
 
 	if image != nil {
-		imageURL, errUpload := storage.UploadThumbnail(image)
+		imageURL, errUpload := article.sb.Upload(image)
 		if errUpload != nil {
 			return entity.ArticleCore{}, errUpload
 		}
@@ -158,7 +160,7 @@ func (article *articleRepository) GetAllArticle(page, limit int, search, filter 
 func (article *articleRepository) CreateArticle(articleInput entity.ArticleCore, image *multipart.FileHeader) (entity.ArticleCore, error) {
 	articleData := entity.ArticleCoreToArticleModel(articleInput)
 
-	imageURL, uploadErr := storage.UploadThumbnail(image)
+	imageURL, uploadErr := article.sb.Upload(image)
 	if uploadErr != nil {
 		return entity.ArticleCore{}, uploadErr
 	}

@@ -22,11 +22,13 @@ import (
 
 type AdminRepository struct {
 	db *gorm.DB
+	sb storage.StorageInterface
 }
 
-func NewAdminRepository(db *gorm.DB) entity.AdminRepositoryInterface {
+func NewAdminRepository(db *gorm.DB, sb storage.StorageInterface) entity.AdminRepositoryInterface {
 	return &AdminRepository{
 		db: db,
+		sb: sb,
 	}
 }
 
@@ -34,7 +36,7 @@ func (ar *AdminRepository) Create(image *multipart.FileHeader, data entity.Admin
 	dataAdmins := entity.AdminCoreToAdminModel(data)
 
 	if image != nil {
-		imageURL, errUpload := storage.UploadThumbnail(image)
+		imageURL, errUpload := ar.sb.Upload(image)
 		if errUpload != nil {
 			return entity.AdminCore{}, errUpload
 		}
@@ -122,13 +124,13 @@ func (ar *AdminRepository) SelectById(adminId string) (entity.AdminCore, error) 
 func (ar *AdminRepository) Update(image *multipart.FileHeader, adminId string, data entity.AdminCore) error {
 	dataAdmins := entity.AdminCoreToAdminModel(data)
 
-	dataFind , errFind := ar.SelectById(adminId) 
-	if errFind != nil  {
+	dataFind, errFind := ar.SelectById(adminId)
+	if errFind != nil {
 		return errFind
 	}
 
 	if image != nil {
-		imageURL, errUpload := storage.UploadThumbnail(image)
+		imageURL, errUpload := ar.sb.Upload(image)
 		if errUpload != nil {
 			return errUpload
 		}

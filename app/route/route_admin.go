@@ -19,10 +19,12 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
+	supabase "github.com/supabase-community/storage-go"
+	"recything/utils/storage"
 )
 
-func RouteAdmin(e *echo.Group, db *gorm.DB) {
-
+func RouteAdmin(e *echo.Group, db *gorm.DB,sb *supabase.Client) {
+	supabaseConfig := storage.NewStorage(sb)
 	// import user
 	achievementRepository := achievement.NewAchievementRepository(db)
 	userRepository :=  userRepository.NewUserRepository(db,achievementRepository)
@@ -30,7 +32,7 @@ func RouteAdmin(e *echo.Group, db *gorm.DB) {
 	//userHandler := adminHandler.NewAdminHandler(userService)
 
 	// manage admin
-	adminRepository := adminRepository.NewAdminRepository(db)
+	adminRepository := adminRepository.NewAdminRepository(db,supabaseConfig)
 	adminService := adminService.NewAdminService(adminRepository)
 	adminHandler := adminHandler.NewAdminHandler(adminService, userService)
 

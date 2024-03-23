@@ -4,50 +4,50 @@ import (
 	"errors"
 	"mime/multipart"
 	"recything/app/config"
+	"recything/utils/constanta"
+
 	supabase "github.com/supabase-community/storage-go"
 )
 
-var (
-	contentType   = "image/png"
-	bucket        = "RecyThingAPI"
-	upsert        = true
-	URL           = "https://vjnyddjlwngtvvndowgo.supabase.co"
-	storageClient = supabase.NewClient(URL, config.InitConfig().API_STORAGE, nil)
-)
-
-func UploadProof(image *multipart.FileHeader) (string, error) {
-	file, err := image.Open()
-	if err != nil {
-		return "", err
-	}
-	defer file.Close()
-
-	result, err := storageClient.UploadFile(bucket, image.Filename, file, supabase.FileOptions{
-		ContentType: &contentType,
-		Upsert:      &upsert,
-	})
-	if err != nil {
-		return "", errors.New(err.Error())
-	}
-	url := URL + result.Key
-	return url, nil
+type storageConfig struct {
+	sb *supabase.Client
 }
 
+type StorageInterface interface {
+	Upload(image *multipart.FileHeader) (string, error)
+}
 
-func UploadThumbnail(image *multipart.FileHeader) (string, error) {
+func NewStorage(sb *supabase.Client) StorageInterface {
+	return &storageConfig{
+		sb: sb,
+	}
+}
+
+func InitStorage(cfg *config.AppConfig) *supabase.Client {
+	storageClient := supabase.NewClient(constanta.URL_STORAGE, cfg.API_STORAGE, nil)
+	return storageClient
+}
+
+var (
+	contentType = "image/png"
+	bucket      = "recything"
+	upsert      = true
+)
+
+func (sc *storageConfig) Upload(image *multipart.FileHeader) (string, error) {
 	file, err := image.Open()
 	if err != nil {
 		return "", err
 	}
 	defer file.Close()
 
-	result, err := storageClient.UploadFile(bucket, image.Filename, file, supabase.FileOptions{
+	result, err := sc.sb.UploadFile(bucket, image.Filename, file, supabase.FileOptions{
 		ContentType: &contentType,
 		Upsert:      &upsert,
 	})
 	if err != nil {
 		return "", errors.New(err.Error())
 	}
-	url := URL + result.Key
+	url := constanta.URL + result.Key
 	return url, nil
 }

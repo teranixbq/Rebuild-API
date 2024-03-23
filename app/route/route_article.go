@@ -10,12 +10,15 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
+	supabase "github.com/supabase-community/storage-go"
+	"recything/utils/storage"
 )
 
-func RouteArticle(e *echo.Group, db *gorm.DB) {
+func RouteArticle(e *echo.Group, db *gorm.DB, sb *supabase.Client) {
+	supabaseConfig := storage.NewStorage(sb)
 	//manage article
 	trashRepo := trashRepository.NewTrashCategoryRepository(db)
-	articleRepo := repository.NewArticleRepository(db,trashRepo)
+	articleRepo := repository.NewArticleRepository(db,trashRepo,supabaseConfig)
 	articleServ := service.NewArticleService(articleRepo)
 	articleHand := handler.NewArticleHandler(articleServ)
 
