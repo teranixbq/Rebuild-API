@@ -21,11 +21,8 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            sudo killall rebuild
             export PATH=$PATH:/usr/local/go/bin
             cd juang/Rebuild-API
             git pull origin main
-
-      - name: Build and deploy (if successful)
-        run: make run-build
-        if: success()
+            go build -o rebuild main.go
+            ./rebuild
