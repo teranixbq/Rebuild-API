@@ -26,3 +26,6 @@ jobs:
             git pull origin main
             go build -o rebuild main.go
             ./rebuild
+            
+      - name: Exit the workflow (success)
+        run: exit 0 
