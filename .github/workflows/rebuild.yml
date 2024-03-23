@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  deploy-swagger:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,7 +21,11 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
+            sudo killall rebuild
             export PATH=$PATH:/usr/local/go/bin
             cd juang/Rebuild-API
             git pull origin main
-            make run-build
+
+      - name: Build and deploy (if successful)
+        run: make run-build
+        if: success()
