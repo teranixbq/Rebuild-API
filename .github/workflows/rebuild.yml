@@ -6,9 +6,13 @@ on:
       - main
 
 jobs:
-  deploy-prod:
+  deploy-swagger:
     runs-on: ubuntu-latest
+
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
       - name: Connect to server using SSH
         uses: appleboy/ssh-action@v0.1.10
         with:
@@ -16,7 +20,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.KEY }}
           port: ${{ secrets.SSH_PORT }}
-          script:
+          script: |
             cd juang/Rebuild-API
             git pull origin main
             make run-build
