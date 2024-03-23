@@ -27,3 +27,13 @@ jobs:
             git pull origin main
             go build -o rebuild main.go
             ./rebuild
+
+     - name: Verify server
+        run: |
+          curl -X GET http://[::]:8091
+          if [[ $? -eq 0 ]]; then
+            echo "Server HTTP berhasil dijalankan!"
+          else
+            echo "Server HTTP gagal dijalankan!"
+            exit 1
+          fi
