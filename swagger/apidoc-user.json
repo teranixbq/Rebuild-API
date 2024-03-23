@@ -1,0 +1,3589 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "RecyThing",
+        "version": "1.0"
+    },
+    "servers": [
+        {
+            "url": "https://api.recything.my.id/"
+        }
+    ],
+    "externalDocs": {
+        "description": "RecyThing Github",
+        "url": "https://api.server.test/v1"
+    },
+    "paths": {
+        "/login": {
+            "post": {
+                "tags": [
+                    "Login Page User"
+                ],
+                "summary": "login for user",
+                "description": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RequestLogin"
+                            },
+                            "examples": {
+                                "user": {
+                                    "value": {
+                                        "email": "recythinguser@gmail.com",
+                                        "password": "recything003"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "berhasil melakukan login",
+                                            "data": {
+                                                "id": "c84a71c9-526a-4622-9de2-22584f1690e2",
+                                                "fullname": "recything",
+                                                "email": "recythinguser@gmail.com",
+                                                "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MDAxMDQzOTksImlkIjoiYzg0YTcxYzktNTI2YS00NjIyLTlkZTItMjI1ODRmMTY5MGUyIiwicm9sZSI6IiJ9.cd68WXniUznvZKcoYNmadSs25yYfep80JLF-RlPLw90"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/register": {
+            "post": {
+                "tags": [
+                    "Login Page User"
+                ],
+                "summary": "register user",
+                "description": "register only for user",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RequestRegister"
+                            },
+                            "examples": {
+                                "success": {
+                                    "value": {
+                                        "fullname": "recything",
+                                        "email": "recythinguser@gmail.com",
+                                        "password": "recythingalta",
+                                        "confirm_password": "recythingalta"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "berhasil membuat data",
+                                            "data": {
+                                                "id": "c84a71c9-526a-4622-9de2-22584f1690e2",
+                                                "fullname": "recything",
+                                                "email": "recythinguser@gmail.com"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/forgot-password": {
+            "post": {
+                "tags": [
+                    "Login Page User"
+                ],
+                "summary": "forget password",
+                "description": "user send the email registered in the application",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "email"
+                                ]
+                            },
+                            "examples": {
+                                "request": {
+                                    "value": {
+                                        "email": "recythinguser@gmail.com"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "otp berhasil dikirim"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/verify-otp": {
+            "post": {
+                "tags": [
+                    "Login Page User"
+                ],
+                "summary": "verification otp",
+                "description": "this endpoint for verification otp which has been sent by email",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "otp": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "email",
+                                    "otp"
+                                ]
+                            },
+                            "examples": {
+                                "example": {
+                                    "value": {
+                                        "email": "recythinguser@gmail.com",
+                                        "otp": "3612"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "verifikasi otp berhasil"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/new-password": {
+            "patch": {
+                "tags": [
+                    "Login Page User"
+                ],
+                "summary": "new password for forgot password",
+                "description": "Update the password when you have completed the OTP verification stage",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "minLength": 8
+                                    },
+                                    "confirm_password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "email",
+                                    "password",
+                                    "confirm_password"
+                                ]
+                            },
+                            "examples": {
+                                "example": {
+                                    "value": {
+                                        "email": "recythinguser@gmail.com",
+                                        "password": "recything003",
+                                        "confirm_password": "recything003"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "berhasil update password"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/profile": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Users Profile"
+                ],
+                "summary": "profile user",
+                "description": "view all data user",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/RequestResponseDataUser"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "berhasil mendapatkan profile",
+                                            "data": {
+                                                "id": "c84a71c9-526a-4622-9de2-22584f1690e2",
+                                                "fullname": "recything",
+                                                "email": "recythinguser@gmail.com",
+                                                "date_of_birth": "",
+                                                "point": 0,
+                                                "phone": "",
+                                                "address": "",
+                                                "purpose": ""
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Users Profile"
+                ],
+                "summary": "update profile user",
+                "description": "update data user except password",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RequestResponseDataUser"
+                            },
+                            "examples": {
+                                "example": {
+                                    "value": {
+                                        "fullname": "recything",
+                                        "phone": "6282287653245",
+                                        "address": "kota palu",
+                                        "date_of_birth": "2002-03-07",
+                                        "purpose": "saya ingin melestarkan lingkungan"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "berhasil melakukan update data"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/profile/reset-password": {
+            "patch": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Users Profile"
+                ],
+                "summary": "reset password user",
+                "description": "The user can update the password, but must remember the previous password",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "boolean",
+                                "properties": {
+                                    "password": {
+                                        "type": "string",
+                                        "minLength": 8
+                                    },
+                                    "new-password": {
+                                        "type": "string"
+                                    },
+                                    "confirm_password": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "password",
+                                    "new_password",
+                                    "confirm_password"
+                                ]
+                            },
+                            "examples": {
+                                "example": {
+                                    "value": {
+                                        "password": "recything003",
+                                        "new_password": "alterra002",
+                                        "confirm_password": "alterra002"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "berhasil update password"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/recybot": {
+            "post": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Home & Info"
+                ],
+                "summary": "chatbot",
+                "description": "post your question",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "question": {
+                                        "type": "string"
+                                    }
+                                },
+                                "required": [
+                                    "question"
+                                ]
+                            },
+                            "examples": {
+                                "example": {
+                                    "value": {
+                                        "question": "berikan 3 contoh sampah organik"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "Berhasil melakukan request chat",
+                                            "data": "Berikut adalah 3 contoh sampah organik:\n\n1. Sisa makanan: Sisa-sisa makanan seperti kulit buah, sayuran yang busuk, potongan daging, atau tulang adalah contoh sampah organik yang dapat terurai dengan mudah.\n\n2. Daun kering: Daun-daun yang sudah jatuh dari pohon adalah contoh sampah organik yang dapat diuraikan menjadi kompos.\n\n3. Serasah tumbuhan: Serasah adalah lapisan bahan organik yang terbentuk dari bahan-bahan yang jatuh dari tumbuhan seperti ranting, daun, dan bunga yang layu. Sampah organik ini juga dapat dijadikan kompos."
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/faq": {
+            "get": {
+                "tags": [
+                    "Home & Info"
+                ],
+                "summary": "Frequently Asked Questions",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "berhasil mendapatkan data faq",
+                                            "data": [
+                                                {
+                                                    "Id": 1,
+                                                    "Title": "Cara mengelola sampah",
+                                                    "Description": "Cara mengelola sampah dapat melibatkan beberapa langkah, termasuk: 1. Pemilahan Sampah: Pisahkan sampah menjadi kategori berbeda, seperti organik, kertas, plastik, logam, dan sebagainya. 2. Daur Ulang: Maksimalkan daur ulang dengan mengumpulkan, mendaur ulang, dan menggunakan kembali bahan-bahan yang bisa didaur ulang. 3. Pengomposan: Buat kompos dari sisa makanan dan limbah organik untuk menghasilkan pupuk alami. 4. Pengurangan Sampah: Kurangi penggunaan kantong plastik sekali pakai dan barang-barang sekali pakai."
+                                                },
+                                                {
+                                                    "Id": 2,
+                                                    "Title": "Cara menukarkan sampah",
+                                                    "Description": "Berikut merupakan langkah langkah untuk menukarkan sampah : 1. Klik fitur Daur Ulang  kemudian pilih menu Tukarkan Sampahmu. 2. Selanjutnya pilih lokasi daur ulang yang terdekat dari lokasi anda. 3. Lihat detail jam operasional dari lokasi penukaran sampah. 4. Klik arahkan untuk mempermudah anda dalam menemukan lokasi atau bisa langsung ke lokasi drop point jika anda sudah mengetahui lokasi penukaran."
+                                                },
+                                                {
+                                                    "Id": 3,
+                                                    "Title": "Cara menukar poin",
+                                                    "Description": "Berikut ini merupakan langkah untuk menukarkan poin: 1. Pergi ke fitur tukar poin pada halaman homescreen aplikasi. 2. Pada bagian voucher, pilih item penukaran sesuai dengan poin yang anda miliki saat ini. 3. Selanjutnya klik Tukar dan kemudian masukkan nomor handphone anda untuk melakukan verifikasi nomor. 4. Klik konfirmasi jika nomor yang dimasukkan sudah sesuai kemudian tunggu beberapa saat untuk memproses penukaran poin. 5. Cek riwayat penukaran pada tab Riwayat"
+                                                },
+                                                {
+                                                    "Id": 4,
+                                                    "Title": "Bergabung komunitas",
+                                                    "Description": "Jika anda bingung bagaimana cara bergabung dengan kokmunitas berikut merupakan cara untuk anda bisa bergabung dengan komunitas : 1. Klik menu komunitas untuk melihat rekomendasi komunitas atau mencari komunitas. 2. Pada kolom pencarian masukkan kata kunci komunitas yang relevan dengan keinginan anda atau anda bisa mencari komunitas pada halaman rekomendasi komunitas. 3. Setelah menemukan komunitas yang sesuai dengan yang anda cari, klik komunitas tersebut untuk melihat detail komunitas. 4. Klik pada bagian Ikuti Komunitas untuk anda dapat bergabung dan berpartisipasi dalam event yang tersedia pada komunitas tersebut."
+                                                },
+                                                {
+                                                    "Id": 5,
+                                                    "Title": "Cara melaporkan tumpukan sampah",
+                                                    "Description": "Cara untuk melaporkan tumpukan sampah dapat dilakukan dengan cara sebagi berikut: 1. Klik pada menu pelaporan kemudian pilih pada bagian Tumpukan Sampah. 2. Selanjutnya silahkan isi detail pelaporan seperti lokasi sampah, Jenis sampah, Tuliskan kondisi sampah dan menyertakan bukti foto/video 3. Selanjutkan pastikan data detail pelaporan anda sudah lengkap. 4. Klik kirim untuk untuk melaporkan tumpukan sampah. 5. Anda dapat melihat riwayat pelaporan anda paga bagian awal menu pelaporan."
+                                                },
+                                                {
+                                                    "Id": 6,
+                                                    "Title": "Cara mengerjakan daily mission",
+                                                    "Description": "Berikut merupakan cara yang ada bisa lakukan untuk mengerkjakan daily mission:: 1. Klik pada menu mission 2. Pada menu mission ini akan ada beberapa misi yang tersedia yang bisa anda kerjakan. 3. Klik terima tantangan untuk anda dapat mengerjakan mission tersebut. 4. Lengkapi tugas/misi dengan mengunggah bukti dari masing tugas yang diperintahkan. 5. Klik Kirim jika bukti dari misi sudah dilengkapi. 6. Selanjutnya silahkan tunggu untuk beberapa saat karena misi yang anda dikerjakan akan diverivikasi terlebih dahulu oleh admin. 7. Jika misi anda diterima maka anda akan mendapatkan perolehan poin hadiah dari misi yang anda kerjakan."
+                                                },
+                                                {
+                                                    "Id": 7,
+                                                    "Title": "Voucher tidak masuk",
+                                                    "Description": "Jika setelah anda melakukan penukaran poin dan voucher yang anda tukarkan belum masuk, maka ada beberapa halk yang bisa anda lakukan : 1. Pastikan bahwa nomor yang anda gunakan untuk menerima reward penukaran sudah sesuai. 2. Jika nomor yang anda masukkan sebelumnya sudah sesuai namun voucher juga masih belum masuk, anda dapat menghubungi kami langsung dengan cara masuk kedalam menu profil kemudian pilih Hubungi Kami. 3. Anda dapat menghubungi dan konfirmasi dengan kami secara langsung untuk mendapatkan penanganan lebih lanjut."
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/faq/{id}": {
+            "get": {
+                "tags": [
+                    "Home & Info"
+                ],
+                "summary": "Frequently Asked Questions detail",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id faq",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "examples": {
+                            "example": {
+                                "value": 2
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "berhasil mendapatkan faq",
+                                            "data": {
+                                                "Id": 2,
+                                                "Title": "Cara menukarkan sampah",
+                                                "Description": "Berikut merupakan langkah langkah untuk menukarkan sampah : 1. Klik fitur Daur Ulang  kemudian pilih menu Tukarkan Sampahmu. 2. Selanjutnya pilih lokasi daur ulang yang terdekat dari lokasi anda. 3. Lihat detail jam operasional dari lokasi penukaran sampah. 4. Klik arahkan untuk mempermudah anda dalam menemukan lokasi atau bisa langsung ke lokasi drop point jika anda sudah mengetahui lokasi penukaran."
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/reports": {
+            "post": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Reporting"
+                ],
+                "summary": "Report Rubbish",
+                "description": "Endpoint for Reporting Rubbish and Literring, example input form, see application json example",
+                "parameters": [],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RequestReportingUser"
+                            },
+                            "encoding": {
+                                "images": {
+                                    "style": "form"
+                                }
+                            }
+                        },
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RequestReportingUser"
+                            },
+                            "examples": {
+                                "Report Rubbish": {
+                                    "description": "Contoh request form report rubbish",
+                                    "value": {
+                                        "report_type": "tumpukan sampah",
+                                        "location": "Jalan Jati Makmur No.15 Jatiwaringin Pondokgede, RT No.003, RT.001/RW.002, Jatirahayu, Kec. Pd. Melati, Kota Bks, Jawa Barat 17411",
+                                        "longitude": 106.9124904,
+                                        "latitude": -6.2846906,
+                                        "address_point": "samping pager biru",
+                                        "trash_type": "sampah kering",
+                                        "description": "Disamping mall banyak sampah numpuk",
+                                        "images": [
+                                            {
+                                                "image1": "image1"
+                                            },
+                                            {
+                                                "image2": "image2"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "Report Literring (Kecil)": {
+                                    "description": "Contoh request form report literring skala besar",
+                                    "value": {
+                                        "report_type": "pelanggaran sampah",
+                                        "scale_type": "skala kecil",
+                                        "location": "Jalan Jati Kramat Indah 2 ",
+                                        "longitude": 106.9124904,
+                                        "latitude": -6.2846906,
+                                        "address_point": "lapangan bola",
+                                        "insident_date": "2023-10-03",
+                                        "insident_time": "15:00",
+                                        "description": "Seseorang membuang sampah sembarangan hingga banyak sekali",
+                                        "images": [
+                                            {
+                                                "image1": "image1"
+                                            },
+                                            {
+                                                "image2": "image2"
+                                            }
+                                        ]
+                                    }
+                                },
+                                "Report Literring (Besar)": {
+                                    "description": "Contoh request form report literring skala besar",
+                                    "value": {
+                                        "report_type": "pelanggaran sampah",
+                                        "scale_type": "skala besar",
+                                        "location": "Jalan Jati Kramat Estate ",
+                                        "longitude": 106.9124904,
+                                        "latitude": -6.2846906,
+                                        "address_point": "depan ruko teratai",
+                                        "insident_date": "2023-10-03",
+                                        "insident_time": "15:00",
+                                        "company_name": "PD.Kertas Teratai Skema",
+                                        "dangerous_waste": false,
+                                        "description": "perusahaan ini sering membuang sisa-sisa kertas kebelakang gedungnya",
+                                        "images": [
+                                            {
+                                                "image1": "image1"
+                                            },
+                                            {
+                                                "image2": "image2"
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "berhasil melaporkan"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/reports/history": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Reporting"
+                ],
+                "summary": "Report history user",
+                "description": "Report all history user",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "berhasil mendapatkan semua data laporan",
+                                            "data": [
+                                                {
+                                                    "Id": "PS-1CA5CC1E1D8F463",
+                                                    "report_type": "pelanggaran sampah",
+                                                    "longitude": 106.9124904,
+                                                    "latitude": -6.2846906,
+                                                    "location": "Jalan Jati Mekar satu",
+                                                    "description": "seseorang membuang sampah ke sungai",
+                                                    "address_point": "dekat masjid",
+                                                    "status": "perlu ditinjau",
+                                                    "scale_type": "skala Kecil",
+                                                    "insident_date": "2023-10-03",
+                                                    "insident_time": "15:00",
+                                                    "created_at": "2023-11-21T04:44:00Z",
+                                                    "updated_at": "2023-11-21T04:44:00Z"
+                                                },
+                                                {
+                                                    "Id": "TS-A8AE4C89C1594E9",
+                                                    "report_type": "tumpukan sampah",
+                                                    "longitude": 106.9124904,
+                                                    "latitude": -6.2846906,
+                                                    "location": "Jalan Jati Makmur No.15 Jatiwaringin Pondokgede, RT No.003, RT.001/RW.002, Jatirahayu, Kec. Pd. Melati, Kota Bks, Jawa Barat 17411",
+                                                    "description": "terdapat banyak sekali ",
+                                                    "address_point": "samping pager biru",
+                                                    "status": "perlu ditinjau",
+                                                    "trash_type": "sampah kering",
+                                                    "created_at": "2023-11-21T03:46:06Z",
+                                                    "updated_at": "2023-11-21T03:46:06Z"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/reports/history/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Reporting"
+                ],
+                "summary": "Detail Report User",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "id report",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "examples": {
+                            "ID Report": {
+                                "value": "PS-1CA5CC1E1D8F463"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "berhasil mendapatkan data laporan",
+                                            "data": {
+                                                "Id": "PS-1CA5CC1E1D8F463",
+                                                "report_type": "pelanggaran sampah",
+                                                "longitude": 106.9124904,
+                                                "latitude": -6.2846906,
+                                                "location": "Jalan Jati Mekar satu",
+                                                "description": "seseorang membuang sampah ke sungai",
+                                                "address_point": "dekat masjid",
+                                                "status": "perlu ditinjau",
+                                                "images": [
+                                                    {
+                                                        "id": "350b28aa-79a4-4756-a900-9b3af482272b",
+                                                        "image": "https://storage.googleapis.com/report_proof/proof-file/bc52e1b1-d0f4-43b1-9f5c-40b9b31b7edb.png",
+                                                        "created_at": "2023-11-21T04:44:03Z",
+                                                        "updated_at": "2023-11-21T04:44:03Z"
+                                                    },
+                                                    {
+                                                        "id": "61414e1c-ea57-4798-b271-5477ea4f8285",
+                                                        "image": "https://storage.googleapis.com/report_proof/proof-file/0c060794-ca77-4108-b12b-3134e3723f38.png",
+                                                        "created_at": "2023-11-21T04:44:05Z",
+                                                        "updated_at": "2023-11-21T04:44:05Z"
+                                                    }
+                                                ],
+                                                "scale_type": "skala Kecil",
+                                                "insident_date": "2023-10-03",
+                                                "insident_time": "15:00",
+                                                "created_at": "2023-11-21T04:44:00Z",
+                                                "updated_at": "2023-11-21T04:44:00Z"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/vouchers": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Users Point & Voucher"
+                ],
+                "summary": "Get all voucher with pagination",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/search"
+                    },
+                    {
+                        "$ref": "#/components/parameters/limit"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseVoucher"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "Berhasil mendapatkan seluruh data",
+                                            "data": [
+                                                {
+                                                    "id": "043f36d9-1f3a-4a6e-b218-6ce676b1e5b7",
+                                                    "image": "https://storage.googleapis.com/article_thumbnail/thumbnail/e48154d7-5baf-4370-a2d3-156cd9681d13.png",
+                                                    "reward_name": "OVO 50000K",
+                                                    "point": 5000,
+                                                    "description": "OVO Voucher hanya berlaku untuk 1 pengguna/transaksi selama masa berlaku.",
+                                                    "start_date": "2023-11-28",
+                                                    "end_date": "2023-12-11"
+                                                },
+                                                {
+                                                    "id": "0ad1f2e4-9676-47f8-8bb9-520fa7021464",
+                                                    "image": "https://storage.googleapis.com/article_thumbnail/thumbnail/2b177a81-b703-4f9f-b474-24d226cadf03.png",
+                                                    "reward_name": "DANA 100K",
+                                                    "point": 100000,
+                                                    "description": "Dana Kaget 100",
+                                                    "start_date": "2023-11-11",
+                                                    "end_date": "2023-12-11"
+                                                },
+                                                {
+                                                    "id": "0b7bff7a-7b12-44f6-9976-239389424509",
+                                                    "image": "https://storage.googleapis.com/article_thumbnail/thumbnail/e147ed1d-6234-4f38-99d8-cbff0132d70b.png",
+                                                    "reward_name": "SHOPEE PAY 25000",
+                                                    "point": 25000,
+                                                    "description": "ShopeePay",
+                                                    "start_date": "2023-11-11",
+                                                    "end_date": "2023-12-11"
+                                                },
+                                                {
+                                                    "id": "24f7f2e5-a3b0-4f54-94b2-a0cc32b63a55",
+                                                    "image": "https://storage.googleapis.com/article_thumbnail/thumbnail/e458469e-74ba-4d37-8cd3-06cb25b7032f.png",
+                                                    "reward_name": "SEPULSA 50",
+                                                    "point": 150000,
+                                                    "description": "SEPULSA",
+                                                    "start_date": "2023-11-11",
+                                                    "end_date": "2023-12-11"
+                                                },
+                                                {
+                                                    "id": "79f65530-e9e2-407b-8c44-e1ef9196ba69",
+                                                    "image": "https://storage.googleapis.com/article_thumbnail/thumbnail/1d591620-e8f6-4ad0-b7d6-cee1eef7d245.png",
+                                                    "reward_name": "SHOPEE PAY 100000",
+                                                    "point": 100000,
+                                                    "description": "SHOPEE PAY 100000",
+                                                    "start_date": "2023-11-11",
+                                                    "end_date": "2023-11-12"
+                                                },
+                                                {
+                                                    "id": "8fd39e01-6b06-42a2-876c-bcdcb985d31b",
+                                                    "image": "https://storage.googleapis.com/article_thumbnail/thumbnail/2cf24897-18ab-485c-adf4-5da325fe7e68.png",
+                                                    "reward_name": "SEPULSA 50",
+                                                    "point": 150000,
+                                                    "description": "SEPULSA",
+                                                    "start_date": "2023-11-03",
+                                                    "end_date": "2023-12-04"
+                                                },
+                                                {
+                                                    "id": "96eeae23-8a03-45e4-93d4-3099d78c9866",
+                                                    "image": "https://storage.googleapis.com/article_thumbnail/thumbnail/317a7d43-5d85-4229-8f44-44b8576a4d25.png",
+                                                    "reward_name": "SEPULSA 150000",
+                                                    "point": 150000,
+                                                    "description": "SEPULSA",
+                                                    "start_date": "2002-03-03",
+                                                    "end_date": "2002-03-04"
+                                                },
+                                                {
+                                                    "id": "9ac70514-bebe-4483-b8ad-6ceafcc4dc96",
+                                                    "image": "https://storage.googleapis.com/article_thumbnail/thumbnail/5f133696-5a48-4ee7-841c-0d1cc22d2d68.png",
+                                                    "reward_name": "DANA 50K",
+                                                    "point": 5000,
+                                                    "description": "Voucher berlaku untuk 1 kali transaksi/pengguna selama periode berlangsung",
+                                                    "start_date": "2023-11-27",
+                                                    "end_date": "2023-12-03"
+                                                },
+                                                {
+                                                    "id": "b2491035-162b-4050-baaa-d4736c87fdc1",
+                                                    "image": "https://storage.googleapis.com/article_thumbnail/thumbnail/cbd30708-0b23-4ae3-a2c1-8cf18b98ed67.png",
+                                                    "reward_name": "Shopee Pay 100000",
+                                                    "point": 2000,
+                                                    "description": "voucher shopee pay 100000",
+                                                    "start_date": "2023-11-27",
+                                                    "end_date": "2023-12-01"
+                                                },
+                                                {
+                                                    "id": "c10f0198-15d8-404a-8c37-952d582f8555",
+                                                    "image": "https://storage.googleapis.com/article_thumbnail/thumbnail/cc67856a-cc99-485a-8018-b8985e8c8c88.png",
+                                                    "reward_name": "SHOPEE PAY 25000",
+                                                    "point": 25000,
+                                                    "description": "Shopee Pay",
+                                                    "start_date": "2023-11-11",
+                                                    "end_date": "2023-12-11"
+                                                }
+                                            ],
+                                            "pagination": {
+                                                "limit": 10,
+                                                "current_page": 1,
+                                                "last_page": 2
+                                            },
+                                            "count_data": 12
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Users Point & Voucher"
+                ],
+                "summary": "exchange point/claim voucher",
+                "description": "",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "id_voucher": {
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "examples": {
+                                "success": {
+                                    "value": {
+                                        "id_voucher": "6ed16184-ac8b-4c1c-8102-015d6231157b",
+                                        "phone": "082298667543"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "berhasil membuat data"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/vouchers/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Users Point & Voucher"
+                ],
+                "summary": "Get detail voucher",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseVoucher"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "Berhasil mendapatkan data",
+                                            "data": {
+                                                "id": "b2491035-162b-4050-baaa-d4736c87fdc1",
+                                                "image": "https://storage.googleapis.com/article_thumbnail/thumbnail/cbd30708-0b23-4ae3-a2c1-8cf18b98ed67.png",
+                                                "reward_name": "Shopee Pay 100000",
+                                                "point": 2000,
+                                                "description": "voucher shopee pay 100000",
+                                                "start_date": "2023-11-27",
+                                                "end_date": "2023-12-01"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/articles": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Article & Drop Point"
+                ],
+                "summary": "view all article",
+                "description": "view all articles with pagination",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/FilterArticle"
+                    },
+                    {
+                        "$ref": "#/components/parameters/search"
+                    },
+                    {
+                        "$ref": "#/components/parameters/limit"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "berhasil mendapatkan semua article",
+                                            "data": [
+                                                {
+                                                    "id": "0c18a054-f86b-46df-b684-9dc99f6656dc",
+                                                    "title": "ini judul article",
+                                                    "image": "https://storage.googleapis.com/article_thumbnail/thumbnail/2ea2304a-a132-46cb-a56b-b51381f88320.jpg",
+                                                    "content": "ini content",
+                                                    "categories": [
+                                                        {
+                                                            "category": "limbah minyak"
+                                                        }
+                                                    ],
+                                                    "like": 0,
+                                                    "share": 0,
+                                                    "created_at": "2023-11-28T02:18:27Z",
+                                                    "updated_at": "2023-11-28T05:13:40Z"
+                                                },
+                                                {
+                                                    "id": "51568415-75ac-4009-9f3e-646dc18b94b7",
+                                                    "title": "qqqqqupdate",
+                                                    "image": "https://storage.googleapis.com/article_thumbnail/thumbnail/a8108758-3ff7-4930-852a-5a3770a806db.png",
+                                                    "content": "qqqq",
+                                                    "categories": [
+                                                        {
+                                                            "category": "limbah 3"
+                                                        }
+                                                    ],
+                                                    "like": 0,
+                                                    "share": 0,
+                                                    "created_at": "2023-11-28T09:34:10Z",
+                                                    "updated_at": "2023-11-28T09:36:15Z"
+                                                },
+                                                {
+                                                    "id": "59fa732a-4235-4a38-9ca3-97483c07f209",
+                                                    "title": "3 Sampah Berbahaya",
+                                                    "image": "https://storage.googleapis.com/article_thumbnail/thumbnail/8976a1e5-8036-4b3e-b4b8-d5a11e921971.png",
+                                                    "content": "sampah itu berbahaya",
+                                                    "categories": [
+                                                        {
+                                                            "category": "kaleng"
+                                                        },
+                                                        {
+                                                            "category": "rumput"
+                                                        }
+                                                    ],
+                                                    "like": 0,
+                                                    "share": 0,
+                                                    "created_at": "2023-11-28T04:49:39Z",
+                                                    "updated_at": "2023-11-28T04:49:39Z"
+                                                },
+                                                {
+                                                    "id": "5e59bacd-9057-48f0-b442-a1c1eb23237d",
+                                                    "title": "dwadwa",
+                                                    "image": "https://storage.googleapis.com/article_thumbnail/thumbnail/26501cbe-2bd3-4280-ad08-1f71c49aadc3.png",
+                                                    "content": "dwadwa",
+                                                    "categories": [
+                                                        {
+                                                            "category": "test 1"
+                                                        }
+                                                    ],
+                                                    "like": 0,
+                                                    "share": 0,
+                                                    "created_at": "2023-11-30T15:49:17Z",
+                                                    "updated_at": "2023-11-30T15:49:17Z"
+                                                },
+                                                {
+                                                    "id": "754ad26a-95a9-4d82-9909-7dc59c82fbe3",
+                                                    "title": "sampah",
+                                                    "image": "https://storage.googleapis.com/article_thumbnail/thumbnail/9163f869-1d30-43bb-8713-25b465c32a1a.jpg",
+                                                    "content": "sampah sampah",
+                                                    "categories": [
+                                                        {
+                                                            "category": "plastik"
+                                                        }
+                                                    ],
+                                                    "like": 0,
+                                                    "share": 0,
+                                                    "created_at": "2023-11-28T02:43:28Z",
+                                                    "updated_at": "2023-11-28T02:43:28Z"
+                                                },
+                                                {
+                                                    "id": "84f101e1-986a-4b24-add4-587386825e98",
+                                                    "title": "hello!",
+                                                    "image": "https://storage.googleapis.com/article_thumbnail/thumbnail/a911c208-277f-40a9-8268-a370899fbe04.jpg",
+                                                    "content": "hello ges",
+                                                    "categories": [
+                                                        {
+                                                            "category": "test 1"
+                                                        }
+                                                    ],
+                                                    "like": 0,
+                                                    "share": 0,
+                                                    "created_at": "2023-11-30T15:54:42Z",
+                                                    "updated_at": "2023-11-30T15:54:42Z"
+                                                },
+                                                {
+                                                    "id": "8f88a712-59c9-4a76-8f13-3f5335d6f5cb",
+                                                    "title": "ekhem",
+                                                    "image": "https://storage.googleapis.com/article_thumbnail/thumbnail/558059ba-0a1c-4b59-8803-4887a0a78cab.jpg",
+                                                    "content": "hello ges",
+                                                    "categories": [
+                                                        {
+                                                            "category": "bahhh 21"
+                                                        },
+                                                        {
+                                                            "category": "test 1"
+                                                        }
+                                                    ],
+                                                    "like": 0,
+                                                    "share": 0,
+                                                    "created_at": "2023-11-30T15:56:42Z",
+                                                    "updated_at": "2023-11-30T15:56:42Z"
+                                                },
+                                                {
+                                                    "id": "903339af-81cd-47ed-9b31-fadb5e94ce23",
+                                                    "title": "3 Sampah Berbahaya",
+                                                    "image": "https://storage.googleapis.com/article_thumbnail/thumbnail/eb93b403-4c4e-4f86-a9ba-83dcf5b1e7be.jpg",
+                                                    "content": "sampah itu berbahaya",
+                                                    "categories": [
+                                                        {
+                                                            "category": "kayu"
+                                                        },
+                                                        {
+                                                            "category": "laptop"
+                                                        }
+                                                    ],
+                                                    "like": 0,
+                                                    "share": 0,
+                                                    "created_at": "2023-11-28T02:27:11Z",
+                                                    "updated_at": "2023-11-28T02:27:11Z"
+                                                }
+                                            ],
+                                            "pagination": {
+                                                "limit": 10,
+                                                "current_page": 1,
+                                                "last_page": 2
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/articles/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Article & Drop Point"
+                ],
+                "summary": "view detail article",
+                "description": "view details article by id",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "berhasil mendapatkan semua article",
+                                            "data": {
+                                                "id": "0c18a054-f86b-46df-b684-9dc99f6656dc",
+                                                "title": "ini judul article",
+                                                "image": "https://storage.googleapis.com/article_thumbnail/thumbnail/2ea2304a-a132-46cb-a56b-b51381f88320.jpg",
+                                                "content": "ini content",
+                                                "categories": [
+                                                    {
+                                                        "category": "limbah minyak"
+                                                    }
+                                                ],
+                                                "like": 0,
+                                                "share": 0,
+                                                "created_at": "2023-11-28T02:18:27Z",
+                                                "updated_at": "2023-11-28T05:13:40Z"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/articles/popular": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Article & Drop Point"
+                ],
+                "summary": "view popular articles",
+                "description": "view all popular",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "berhasil mendapatkan artikel populer",
+                                            "data": [
+                                                {
+                                                    "id": "2f40abc7-27a9-4881-a1f6-7af910c8d243",
+                                                    "title": "Sampah di Indonesia: Peluang Tersembunyi",
+                                                    "image": "https://storage.googleapis.com/article_thumbnail/thumbnail/1c0fa924-362c-426b-9e5e-f122ac2af294.png",
+                                                    "content": "<p>Pengelolaan sampah di Indonesia bukan hanya sebuah tantangan, melainkan juga menyimpan potensi besar untuk perubahan positif. Meskipun masih ada permasalahan infrastruktur dan kesadaran, negara ini memiliki peluang untuk menerapkan model pengelolaan sampah yang inovatif. Seiring dengan pertumbuhan teknologi dan semangat keberlanjutan yang berkembang, Indonesia dapat memanfaatkan peluang ini untuk memimpin dalam upaya global untuk mengurangi dampak sampah dan menciptakan lingkungan yang lebih sehat.</p>",
+                                                    "like": 1288,
+                                                    "share": 192,
+                                                    "created_at": "2023-12-09T19:01:27+07:00",
+                                                    "updated_at": "2023-12-10T20:13:38+07:00"
+                                                },
+                                                {
+                                                    "id": "f71b237c-5629-4fa2-8c24-d550b6d34f6f",
+                                                    "title": "3 Sampah Berbahaya",
+                                                    "image": "https://storage.googleapis.com/article_thumbnail/thumbnail/3603cc17-6d34-4d60-b6b6-904da5c7d1a2.png",
+                                                    "content": "sampah itu berbahaya",
+                                                    "like": 9023,
+                                                    "share": 462,
+                                                    "created_at": "2023-11-28T04:47:10+07:00",
+                                                    "updated_at": "2023-11-28T04:47:10+07:00"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/articles/like/{id}": {
+            "post": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Article & Drop Point"
+                ],
+                "summary": "like articles by id",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "berhasil melakukan like"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/drop-points": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Article & Drop Point"
+                ],
+                "summary": "view all drop points",
+                "description": "view all drop points with pagination",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/search"
+                    },
+                    {
+                        "$ref": "#/components/parameters/limit"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "berhasil mendapatkan data",
+                                            "data": [
+                                                {
+                                                    "id": "38b56197-9774-4fc6-9685-26e1119baf33",
+                                                    "name": "Rodi Update Recycle",
+                                                    "address": "Jl koja 2 kp, Jl. Kebantenan No.9, RT.002/RW.012, Jatiasih, Kec. Jatiasih, Kota Bks, Jawa Barat 17423",
+                                                    "schedule": [
+                                                        {
+                                                            "day": "rabu",
+                                                            "open_time": "11:00",
+                                                            "close_time": "23:00",
+                                                            "closed": false
+                                                        },
+                                                        {
+                                                            "day": "kamis",
+                                                            "open_time": "",
+                                                            "close_time": "",
+                                                            "closed": true
+                                                        },
+                                                        {
+                                                            "day": "jumat",
+                                                            "open_time": "19:00",
+                                                            "close_time": "23:00",
+                                                            "closed": false
+                                                        },
+                                                        {
+                                                            "day": "sabtu",
+                                                            "open_time": "",
+                                                            "close_time": "",
+                                                            "closed": true
+                                                        },
+                                                        {
+                                                            "day": "minggu",
+                                                            "open_time": "",
+                                                            "close_time": "",
+                                                            "closed": true
+                                                        },
+                                                        {
+                                                            "day": "selasa",
+                                                            "open_time": "",
+                                                            "close_time": "",
+                                                            "closed": true
+                                                        },
+                                                        {
+                                                            "day": "senin",
+                                                            "open_time": "19:00",
+                                                            "close_time": "19:30",
+                                                            "closed": false
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "id": "5ecb63de-d3ee-4d6d-a1b8-d0d67d59f6d3",
+                                                    "name": "Bagas Recycle",
+                                                    "address": "Jl koja 2 kp, Jl. Kebantenan No.9, RT.002/RW.012, Jatiasih, Kec. Jatiasih, Kota Bks, Jawa Barat 17423",
+                                                    "schedule": [
+                                                        {
+                                                            "day": "selasa",
+                                                            "open_time": "",
+                                                            "close_time": "",
+                                                            "closed": true
+                                                        },
+                                                        {
+                                                            "day": "kamis",
+                                                            "open_time": "",
+                                                            "close_time": "",
+                                                            "closed": true
+                                                        },
+                                                        {
+                                                            "day": "senin",
+                                                            "open_time": "",
+                                                            "close_time": "",
+                                                            "closed": true
+                                                        },
+                                                        {
+                                                            "day": "Selasa",
+                                                            "open_time": "11:00",
+                                                            "close_time": "23:00",
+                                                            "closed": false
+                                                        },
+                                                        {
+                                                            "day": "minggu",
+                                                            "open_time": "",
+                                                            "close_time": "",
+                                                            "closed": true
+                                                        },
+                                                        {
+                                                            "day": "sabtu",
+                                                            "open_time": "",
+                                                            "close_time": "",
+                                                            "closed": true
+                                                        },
+                                                        {
+                                                            "day": "jumat",
+                                                            "open_time": "",
+                                                            "close_time": "",
+                                                            "closed": true
+                                                        },
+                                                        {
+                                                            "day": "rabu",
+                                                            "open_time": "",
+                                                            "close_time": "",
+                                                            "closed": true
+                                                        }
+                                                    ]
+                                                }
+                                            ],
+                                            "pagination": {
+                                                "limit": 10,
+                                                "current_page": 1,
+                                                "last_page": 1
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/drop-points/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Article & Drop Point"
+                ],
+                "summary": "view detail drop point",
+                "description": "view details drop point by id",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "berhasil mendapatkan data",
+                                            "data": {
+                                                "id": "38b56197-9774-4fc6-9685-26e1119baf33",
+                                                "name": "Rodi Update Recycle",
+                                                "address": "Jl koja 2 kp, Jl. Kebantenan No.9, RT.002/RW.012, Jatiasih, Kec. Jatiasih, Kota Bks, Jawa Barat 17423",
+                                                "latitude": -6.2914552,
+                                                "longitude": 106.9285376,
+                                                "schedule": [
+                                                    {
+                                                        "day": "rabu",
+                                                        "open_time": "11:00",
+                                                        "close_time": "23:00",
+                                                        "closed": false
+                                                    },
+                                                    {
+                                                        "day": "kamis",
+                                                        "open_time": "",
+                                                        "close_time": "",
+                                                        "closed": true
+                                                    },
+                                                    {
+                                                        "day": "jumat",
+                                                        "open_time": "19:00",
+                                                        "close_time": "23:00",
+                                                        "closed": false
+                                                    },
+                                                    {
+                                                        "day": "sabtu",
+                                                        "open_time": "",
+                                                        "close_time": "",
+                                                        "closed": true
+                                                    },
+                                                    {
+                                                        "day": "minggu",
+                                                        "open_time": "",
+                                                        "close_time": "",
+                                                        "closed": true
+                                                    },
+                                                    {
+                                                        "day": "selasa",
+                                                        "open_time": "",
+                                                        "close_time": "",
+                                                        "closed": true
+                                                    },
+                                                    {
+                                                        "day": "senin",
+                                                        "open_time": "19:00",
+                                                        "close_time": "19:30",
+                                                        "closed": false
+                                                    }
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/missions": {
+            "post": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Mission"
+                ],
+                "summary": "claim mission user",
+                "description": "claim mission by id",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "mission_id": {
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            "examples": {
+                                "example": {
+                                    "value": {
+                                        "mission_id": "MS-2310NJSID"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "berhasil melakukan klaim"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Mission"
+                ],
+                "summary": "view all missions ",
+                "description": "view all missions",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/filterHistoriesMission"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseMission"
+                                },
+                                "examples": {
+                                    "tersedia": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "Berhasil mendapatkan seluruh misi",
+                                            "data": [
+                                                {
+                                                    "mission_id": "76c64616-ea3a-4404-94d0-e90e74c3f96f",
+                                                    "title": "TITLE 96F",
+                                                    "status_mission": "Aktif",
+                                                    "mission_image": "https://storage.googleapis.com/article_thumbnail/thumbnail/535475c8-d020-4ff2-8ee1-937be6b574f8.jpg",
+                                                    "point": 3000,
+                                                    "description": "ayam goreng",
+                                                    "start_date": "2023-12-04",
+                                                    "end_date": "2023-12-10",
+                                                    "created_at": "2023-12-04T11:56:02.535+08:00",
+                                                    "updated_at": "0001-01-01T00:00:00Z"
+                                                },
+                                                {
+                                                    "mission_id": "88fdb631-4c91-4de0-abef-fc5d97a236d6",
+                                                    "title": "ayam goreng 7",
+                                                    "status_mission": "Aktif",
+                                                    "mission_image": "https://storage.googleapis.com/article_thumbnail/thumbnail/f4d36f43-ec60-4661-9adf-623822a3fa39.jpg",
+                                                    "point": 3000,
+                                                    "description": "ayam goreng",
+                                                    "start_date": "2023-12-04",
+                                                    "end_date": "2023-12-10",
+                                                    "created_at": "2023-12-04T12:55:51.221+08:00",
+                                                    "updated_at": "0001-01-01T00:00:00Z"
+                                                },
+                                                {
+                                                    "mission_id": "daaaa7cb-6968-4d8d-9540-552bb5669ce8",
+                                                    "title": "ayam goreng 5",
+                                                    "status_mission": "Aktif",
+                                                    "mission_image": "https://storage.googleapis.com/article_thumbnail/thumbnail/6f9019f2-7666-461c-9fc7-58ea05a4f021.jpg",
+                                                    "point": 3000,
+                                                    "description": "ayam goreng",
+                                                    "start_date": "2023-12-04",
+                                                    "end_date": "2023-12-12",
+                                                    "created_at": "2023-12-04T12:17:32.883+08:00",
+                                                    "updated_at": "0001-01-01T00:00:00Z"
+                                                },
+                                                {
+                                                    "mission_id": "MIS-1E22344C62BD4B2",
+                                                    "title": "ini misi rahasiaa 1aaaaaaaaa",
+                                                    "status_mission": "Aktif",
+                                                    "mission_image": "https://storage.googleapis.com/article_thumbnail/thumbnail/20f92c18-b3a7-4624-9d53-5813144fce92.png",
+                                                    "point": 150000,
+                                                    "description": "SEPULSA",
+                                                    "start_date": "2023-12-10",
+                                                    "end_date": "2023-12-11",
+                                                    "title_stage": "SEPULSA",
+                                                    "description_stage": "stage1qqqqqqqqqqq",
+                                                    "created_at": "2023-12-10T23:10:25.592+08:00",
+                                                    "updated_at": "0001-01-01T00:00:00Z"
+                                                },
+                                                {
+                                                    "mission_id": "MIS-357F3CD5F1DA427",
+                                                    "title": "ini misi rahasiaa 1",
+                                                    "status_mission": "Aktif",
+                                                    "mission_image": "https://storage.googleapis.com/article_thumbnail/thumbnail/88f1b3e0-b845-4baf-ba98-ffeabde4cd4f.png",
+                                                    "point": 150000,
+                                                    "description": "SEPULSA",
+                                                    "start_date": "2023-12-10",
+                                                    "end_date": "2023-12-11",
+                                                    "title_stage": "SEPULSA",
+                                                    "description_stage": "stage1",
+                                                    "created_at": "2023-12-10T22:25:40.685+08:00",
+                                                    "updated_at": "0001-01-01T00:00:00Z"
+                                                },
+                                                {
+                                                    "mission_id": "MIS-BC35B3011CF2435",
+                                                    "title": "judul misi update",
+                                                    "status_mission": "Aktif",
+                                                    "mission_image": "https://storage.googleapis.com/article_thumbnail/thumbnail/6dca4853-4e8e-4ac1-871c-3c2a2cb31206.jpg",
+                                                    "point": 10000,
+                                                    "description": "des  misi update",
+                                                    "start_date": "2010-02-03",
+                                                    "end_date": "2010-02-04",
+                                                    "title_stage": "des  misi update",
+                                                    "description_stage": "title update",
+                                                    "created_at": "2023-12-11T05:26:51.024+08:00",
+                                                    "updated_at": "0001-01-01T00:00:00Z"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "selesai": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "Berhasil mendapatkan seluruh misi",
+                                            "data": [
+                                                {
+                                                    "mission_id": "76c64616-ea3a-4404-94d0-e90e74c3f96f",
+                                                    "claimed_id": "sssssssss",
+                                                    "transaction_id": "fffffff",
+                                                    "title": "TITLE 96F",
+                                                    "status_approval": "disetujui",
+                                                    "status_mission": "Aktif",
+                                                    "mission_image": "https://storage.googleapis.com/article_thumbnail/thumbnail/535475c8-d020-4ff2-8ee1-937be6b574f8.jpg",
+                                                    "point": 3000,
+                                                    "description": "ayam goreng",
+                                                    "start_date": "2023-12-04",
+                                                    "end_date": "2023-12-10",
+                                                    "created_at": "2023-12-06T13:19:26+08:00",
+                                                    "updated_at": "0001-01-01T00:00:00Z"
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "berjalan": {
+                                        "value":{
+                                            "status": true,
+                                            "message": "Berhasil mendapatkan seluruh misi",
+                                            "data": [
+                                                {
+                                                    "mission_id": "76c64616-ea3a-4404-94d0-e90e74c3f96f",
+                                                    "title": "TITLE 96F",
+                                                    "status_approval": "upload bukti pengerjaan",
+                                                    "status_mission": "Aktif",
+                                                    "mission_image": "https://storage.googleapis.com/article_thumbnail/thumbnail/535475c8-d020-4ff2-8ee1-937be6b574f8.jpg",
+                                                    "point": 3000,
+                                                    "description": "ayam goreng",
+                                                    "start_date": "2023-12-04",
+                                                    "end_date": "2023-12-10",
+                                                    "created_at": "0001-01-01T00:00:00Z",
+                                                    "updated_at": "0001-01-01T00:00:00Z"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/missions/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Mission"
+                ],
+                "summary": "get detail missions",
+                "description": "get detail missions",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseMission"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "berhasil mengambil data mission",
+                                            "data": {
+                                                "id": "MIS-1DF224B4D5A8407",
+                                                "name": "membuang sampah pada tempatnya",
+                                                "creator": "",
+                                                "status": "Aktif",
+                                                "mission_image": "https://storage.googleapis.com/article_thumbnail/thumbnail/db1efea2-806a-4ce1-b104-149ff3c50e98.png",
+                                                "point": 150000,
+                                                "description": "buanglah sampah pada tempatnya",
+                                                "start_date": "2023-12-05",
+                                                "end_date": "2023-12-06",
+                                                "mission_stages": [
+                                                    {
+                                                        "id": "xxxxxxxx",
+                                                        "title": "tahap 1",
+                                                        "description": "ini tahap 1",
+                                                        "created_at": "0001-01-01T00:00:00Z",
+                                                        "updated_at": "0001-01-01T00:00:00Z"
+                                                    }
+                                                ],
+                                                "created_at": "2023-12-05T23:14:56.185+08:00",
+                                                "updated_at": "2023-12-06T03:39:21.854+08:00"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/missions/history/{idTransaction}": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Mission"
+                ],
+                "summary": "view detail history missions ",
+                "description": "view detail history missions, by id transaction",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/idTransaction"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseMission"
+                                },
+                                "examples": {
+                                    "200": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "berhasil mengambil data misi",
+                                            "data": {
+                                                "id": "fffffff",
+                                                "user_id": "7b27f83b-8512-48de-a623-109aece77a2b",
+                                                "user": "Samantha Davis",
+                                                "mission_id": "76c64616-ea3a-4404-94d0-e90e74c3f96f",
+                                                "mission_name": "TITLE 96F",
+                                                "description": "ini juga decripi",
+                                                "reason": "foto tidak jelas",
+                                                "images": [
+                                                    {
+                                                        "id": "xxxxxxxxx",
+                                                        "upload_mission_task_id": "fffffff",
+                                                        "image": "ini image",
+                                                        "created_at": "2023-12-06T13:20:15+08:00"
+                                                    }
+                                                ],
+                                                "status": "disetujui",
+                                                "created_at": "2023-12-06T13:19:26+08:00",
+                                                "updated_at": "0001-01-01T00:00:00Z"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/missions/proof": {
+            "post": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Mission"
+                ],
+                "summary": "Upload proof missions",
+                "description": "this endpoint for upload mission proof with multiple images",
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RequestMissionUser"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "berhasil mengupload bukti"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/missions/proof/{id}": {
+            "put": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Mission"
+                ],
+                "summary": "Update Mission",
+                "description": "this enpoint for update mission when approval rejected",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/idupload"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RequestUpdateMissionUser"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "berhasil memperbarui bukti"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/point/daily": {
+            "post": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Users Point & Voucher"
+                ],
+                "summary": "claim daily point",
+                "description": "claim your daily point",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "succes": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "berhasil melakukan daily claim"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/point/claimed": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Users Point & Voucher"
+                ],
+                "summary": "view claimed daily",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "succes": {
+                                        "value":{
+                                            "status": true,
+                                            "message": "berhasil menampilkan data",
+                                            "data": [
+                                                {
+                                                    "claim": true,
+                                                    "daily_point_id": 7,
+                                                    "created_at": "2023-12-12T07:00:00Z"
+                                                },
+                                                {
+                                                    "claim": true,
+                                                    "daily_point_id": 6,
+                                                    "created_at": "2023-12-12T00:00:00Z"
+                                                },
+                                                {
+                                                    "claim": true,
+                                                    "daily_point_id": 5,
+                                                    "created_at": "2023-12-11T00:00:00Z"
+                                                },
+                                                {
+                                                    "claim": true,
+                                                    "daily_point_id": 4,
+                                                    "created_at": "2023-12-10T00:00:00Z"
+                                                },
+                                                {
+                                                    "claim": true,
+                                                    "daily_point_id": 2,
+                                                    "created_at": "2023-12-06T00:00:00Z"
+                                                },
+                                                {
+                                                    "claim": true,
+                                                    "daily_point_id": 3,
+                                                    "created_at": "2023-12-05T00:00:00Z"
+                                                },
+                                                {
+                                                    "claim": true,
+                                                    "daily_point_id": 1,
+                                                    "created_at": "2023-12-04T00:00:00Z"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/point/history": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Users Point & Voucher"
+                ],
+                "summary": "get all history",
+                "description": "history drop sampah, tukar point, hadiah mission",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "succes": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "berhasil menampilkan seluruh data",
+                                            "data": [
+                                                {
+                                                    "created_at": "2023-12-10T10:40:42+07:00",
+                                                    "id_transaction": "4257888526",
+                                                    "point": 5200,
+                                                    "time_transaction": "10:40:42.919",
+                                                    "type_transaction": "tukar poin"
+                                                },
+                                                {
+                                                    "created_at": "2023-12-10T08:57:54+07:00",
+                                                    "id_transaction": "PS30901",
+                                                    "points": 15921,
+                                                    "time_transaction": "08:57:54.099",
+                                                    "type_transaction": "drop sampah"
+                                                },
+                                                {
+                                                    "created_at": "2023-12-10T00:03:34+07:00",
+                                                    "id_transaction": "abd96b87-b5e2-442d-81fa-9e5387074c6c",
+                                                    "point": 3000,
+                                                    "time_transaction": "00:03:34.000",
+                                                    "type_transaction": "hadiah mission"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/point/history/{idTransaction}": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Users Point & Voucher"
+                ],
+                "summary": "get all history",
+                "description": "history drop sampah, tukar point, hadiah mission",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/idTransaction"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "succes": {
+                                        "value": {
+                                            "status": true,
+                                            "message": "berhasil menampilkan data",
+                                            "data": {
+                                                "created_at": "2023-12-10T08:57:54+07:00",
+                                                "drop_point": "Recycle Center",
+                                                "id_transaction": "PS30901",
+                                                "points": 15921,
+                                                "time_transaction": "08:57:54.099",
+                                                "trash_detail": [
+                                                    {
+                                                        "amount": 3.7,
+                                                        "type": "Koran",
+                                                        "unit": "kilogram"
+                                                    },
+                                                    {
+                                                        "amount": 5.6,
+                                                        "type": "Plastik",
+                                                        "unit": "kilogram"
+                                                    }
+                                                ],
+                                                "type_transaction": "reward penukaran sampah"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/trashes": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Trash Category"
+                ],
+                "description": "get all trash category",
+                "summary": "get all category trash",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseTrashCategories"
+                                },
+                                "examples": {
+                                    "succes ": {
+                                        "description": "OK",
+                                        "value": {
+                                            "status": true,
+                                            "message": "Berhasil mendapatkan seluruh kategori sampah",
+                                            "data": [
+                                                {
+                                                    "id": "1",
+                                                    "trash_type": "Koran",
+                                                    "point": 1300,
+                                                    "unit": "kilogram"
+                                                },
+                                                {
+                                                    "id": "2",
+                                                    "trash_type": "Plastik",
+                                                    "point": 2300,
+                                                    "unit": "kilogram"
+                                                },
+                                                {
+                                                    "id": "3",
+                                                    "trash_type": "Elektronik",
+                                                    "point": 5000,
+                                                    "unit": "barang"
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/trashes/{id}": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Trash Category"
+                ],
+                "summary": "get detail",
+                "description": "get detail category trash",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "succes",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseTrashCategories"
+                                },
+                                "examples": {
+                                    "success": {
+                                        "description": "OK",
+                                        "value": {
+                                            "status": true,
+                                            "message": "Berhasil mendapatkan detail kategori sampah",
+                                            "data": {
+                                                "id": "6f6dd30a-12c7-468a-a57a-bda6cf5cdaf5",
+                                                "trash_type": "kayu",
+                                                "point": 100,
+                                                "unit": "barang",
+                                                "created_at": "2023-11-20T13:23:09.262+08:00",
+                                                "updated_at": "2023-11-20T13:23:09.262+08:00"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/achievements": {
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Achievements"
+                ],
+                "summary": "get all Achievements",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "success": {
+                                        "value":{
+                                            "status": true,
+                                            "message": "berhasil mengambil semua data",
+                                            "data": [
+                                                {
+                                                    "id": 1,
+                                                    "name": "platinum",
+                                                    "target_point": 250000
+                                                },
+                                                {
+                                                    "id": 2,
+                                                    "name": "gold",
+                                                    "target_point": 100000
+                                                },
+                                                {
+                                                    "id": 3,
+                                                    "name": "silver",
+                                                    "target_point": 25000
+                                                },
+                                                {
+                                                    "id": 4,
+                                                    "name": "bronze",
+                                                    "target_point": 0
+                                                }
+                                            ]
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/communities":{
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Communities"
+                ],
+                "summary": "view all communities ",
+                "description": "view all communities",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/searchCommunity"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseCommunity"
+                                },
+                                "examples": {
+                                    "200": {
+                                        "value":{
+                                            "status": true,
+                                            "message": "berhasil mendapatkan data",
+                                            "data": [
+                                                {
+                                                    "id": "1b44d47c-662b-45b2-9e00-3202284e6e8d",
+                                                    "name": "Zero Waste Warrior",
+                                                    "location": "Jakarta Pusat",
+                                                    "created_at": "2023-12-08T22:00:54.002Z"
+                                                },
+                                                {
+                                                    "id": "4be2d09a-6d40-4c20-94ec-a65134e51622",
+                                                    "name": "Pecinta Mermet Indonesia",
+                                                    "location": "Samudra Hindia",
+                                                    "created_at": "2023-12-10T19:35:24.726Z"
+                                                },
+                                                {
+                                                    "id": "944506f7-6478-4b87-9b9f-c4905ec0e767",
+                                                    "name": "Ecoguardians",
+                                                    "location": "Jakarta",
+                                                    "created_at": "2023-12-09T17:59:37.638Z"
+                                                },
+                                                {
+                                                    "id": "97eee5ba-64c3-484e-afeb-9fb5ff221826",
+                                                    "name": "Zerowaste Warrior",
+                                                    "location": "Jakarta",
+                                                    "created_at": "2023-12-09T18:02:16.582Z"
+                                                },
+                                                {
+                                                    "id": "dc47e2f1-2c4f-4047-b90f-e0a25d8d43a9",
+                                                    "name": "Recy Beka",
+                                                    "location": "Bekasi Barat",
+                                                    "created_at": "2023-12-08T23:22:36.349Z"
+                                                }
+                                            ],
+                                            "pagination": {
+                                                "limit": 10,
+                                                "current_page": 1,
+                                                "last_page": 1
+                                            },
+                                            "count_data": 5
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/communities/{id}":{
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Communities"
+                ],
+                "summary": "view detail community by id ",
+                "description": "view all community by id",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/id"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseCommunity"
+                                },
+                                "examples": {
+                                    "200": {
+                                        "value":{
+                                            "status": true,
+                                            "message": "berhasil mendapatkan data",
+                                            "data": {
+                                                "id": "97eee5ba-64c3-484e-afeb-9fb5ff221826",
+                                                "name": "Zerowaste Warrior",
+                                                "description": "Para pejuang yang berkomitmen untuk mengurangi sampah dan mencapai gaya hidup tanpa limbah. Mereka memimpin dengan contoh dan berbagi tips untuk membantu anggota lain mengadopsi praktik hidup berkelanjutan.",
+                                                "location": "Jakarta",
+                                                "max_members": 200,
+                                                "image": "https://storage.googleapis.com/article_thumbnail/thumbnail/9b7181fe-fc2a-4664-82fe-b52373182c9d.png",
+                                                "created_at": "2023-12-09T18:02:16.582Z"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/communities/{idKomunitas}":{
+            "post": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Communities"
+                ],
+                "summary": "join community",
+                "description": "join community",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/idKomunitas"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "examples": {
+                                    "200": {
+                                        "value":{
+                                            "status": true,
+                                            "message": "berhasil bergabung dengan komunitas"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/event/{idkomunitas}":{
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Events"
+                ],
+                "summary": "view all  event by id community ",
+                "description": "view all  event by id community",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/idkomunitas"
+                    },
+                    {
+                        "$ref": "#/components/parameters/filterEvent"
+                    },
+                    {
+                        "$ref": "#/components/parameters/search"
+                    },
+                    {
+                        "$ref": "#/components/parameters/page"
+                    },
+                    {
+                        "$ref": "#/components/parameters/limit"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseEvent"
+                                },
+                                "examples": {
+                                    "200": {
+                                        "value":{
+                                            "status": true,
+                                            "message": "berhasil mendapatkan semua event",
+                                            "data": [
+                                                {
+                                                    "id": "32d18f02-1069-4197-8b15-14a131e9a382",
+                                                    "communityId": "dc47e2f1-2c4f-4047-b90f-e0a25d8d43a9",
+                                                    "title": "Minggu Bersih",
+                                                    "quota": 100,
+                                                    "date": "2023/12/30",
+                                                    "status": "belum berjalan"
+                                                },
+                                                {
+                                                    "id": "c125523f-c214-4e11-897c-1eb1c5059f80",
+                                                    "communityId": "dc47e2f1-2c4f-4047-b90f-e0a25d8d43a9",
+                                                    "title": "Jumat Bersih",
+                                                    "quota": 100,
+                                                    "date": "2023/12/30",
+                                                    "status": "belum berjalan"
+                                                },
+                                                {
+                                                    "id": "f32cc071-f274-4ff7-9bf6-3017e00173f4",
+                                                    "communityId": "dc47e2f1-2c4f-4047-b90f-e0a25d8d43a9",
+                                                    "title": "Minggu Bersih",
+                                                    "quota": 100,
+                                                    "date": "2023/12/29",
+                                                    "status": "berjalan"
+                                                }
+                                            ],
+                                            "pagination": {
+                                                "limit": 10,
+                                                "current_page": 1,
+                                                "last_page": 1
+                                            },
+                                            "count": {
+                                                "total_count": 3,
+                                                "count_pending": 2,
+                                                "count_active": 1,
+                                                "count_finished": 0
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/users/event/{idkomunitas}/{idevent}":{
+            "get": {
+                "security": [
+                    {
+                        "token": []
+                    }
+                ],
+                "tags": [
+                    "Events"
+                ],
+                "summary": "view detail  event ",
+                "description": "view detail event",
+                "parameters": [
+                    {
+                        "$ref": "#/components/parameters/idkomunitas"
+                    },
+                    {
+                        "$ref": "#/components/parameters/idevent"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ResponseEvent"
+                                },
+                                "examples": {
+                                    "200": {
+                                        "value":{
+                                            "status": true,
+                                            "message": "berhasil mendapatkan event",
+                                            "data": {
+                                                "id": "32d18f02-1069-4197-8b15-14a131e9a382",
+                                                "communityId": "dc47e2f1-2c4f-4047-b90f-e0a25d8d43a9",
+                                                "title": "Minggu Bersih",
+                                                "image": "https://storage.googleapis.com/article_thumbnail/thumbnail/9dbbace5-0afc-42c2-a81f-b15205d840f5.jpg",
+                                                "description": "Hari minggu bersih bersih",
+                                                "location": "Jakarta Selatan",
+                                                "maplink": "https://maps.app.goo.gl/JN4bsdsTYwVMBkkg8",
+                                                "formlink": "https://www.google.com/intl/id_id/forms/about/",
+                                                "quota": 100,
+                                                "date": "2023/12/30",
+                                                "status": "belum berjalan"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+    },
+    "components": {
+        "parameters": {
+            "IdAdmin": {
+                "name": "id",
+                "in": "path",
+                "description": "id admin",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                },
+                "examples": {
+                    "admin": {
+                        "value": "0c97e17e-d1be-4b54-a40c-78098c5714ac"
+                    }
+                }
+            },
+            "IdUser": {
+                "name": "id",
+                "in": "path",
+                "description": "id user",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                },
+                "examples": {
+                    "user": {
+                        "value": "0c97e17e-d1be-4b54-a40c-78098c5714ac"
+                    }
+                }
+            },
+            "IdReport": {
+                "name": "id",
+                "in": "path",
+                "description": "id report",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                },
+                "examples": {
+                    "id": {
+                        "value": "e81d8dc5-533c-4071-bcf9-d9f2e810140b"
+                    }
+                }
+            },
+            "idPrompt": {
+                "name": "id",
+                "in": "path",
+                "description": "id prompt",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                },
+                "examples": {
+                    "id": {
+                        "value": "e81d8dc5-533c-4071-bcf9-d9f2e810140b"
+                    }
+                }
+            },
+            "FilterReport": {
+                "name": "status",
+                "in": "query",
+                "description": "status reporting",
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "perlu ditinjau",
+                        "diterima",
+                        "ditolak"
+                    ]
+                }
+            },"FilterArticle": {
+                "name": "filter",
+                "in": "query",
+                "description": "filter category",
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "plastik",
+                        "kaca",
+                        "logam",
+                        "organik",
+                        "kertas",
+                        "kaleng",
+                        "minyak",
+                        "elektronik",
+                        "tekstil",
+                        "baterai"
+                    ]
+                }
+            },
+            "idTransaction": {
+                "name": "idTransaction",
+                "in": "path",
+                "description": "id of transaction",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                },
+                "examples": {
+                    "idTransaction": {
+                        "value": "PS30901"
+                    }
+                }
+            },
+            "id": {
+                "name": "id",
+                "in": "path",
+                "description": "id of data",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "idupload": {
+                "name": "id",
+                "in": "path",
+                "description": "id upload mission",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "search": {
+                "name": "search",
+                "in": "query",
+                "description": "search of data",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "limit": {
+                "name": "limit",
+                "in": "query",
+                "description": "limit of data",
+                "schema": {
+                    "type": "integer",
+                    "maximum": 10
+                }
+            },
+            "page": {
+                "name": "page",
+                "in": "query",
+                "description": "page of data",
+                "schema": {
+                    "type": "integer"
+                }
+            },
+            "statusMissions": {
+                "name": "filter",
+                "in": "query",
+                "description": "status of missions",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "searchMissions": {
+                "name": "search",
+                "in": "query",
+                "description": "search by title of missions",
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "filterHistoriesMission": {
+                "name": "filter",
+                "in": "query",
+                "description": "filter by status of missions",
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "berjalan",
+                        "selesai"
+                    ]
+                }
+            },
+            "searchCommunity": {
+                "name": "search",
+                "in": "query",
+                "description": "search by name or location",
+                "schema": {
+                    "type": "string"
+                }
+            },
+             "filterEvent": {
+                "name": "filter",
+                "in": "query",
+                "description": "status event",
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "berjalan",
+                        "belum berjalan",
+                        "selesai"
+                    ]
+                }
+            },
+            "idkomunitas": {
+                "name": "idkomunitas",
+                "in": "path",
+                "description": "id  komunitas",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "idKomunitas": {
+                "name": "idKomunitas",
+                "in": "path",
+                "description": "id  komunitas",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            "idevent": {
+                "name": "idevent",
+                "in": "path",
+                "description": "id event",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            }
+        },
+        "schemas": {
+            "RequestRegister": {
+                "type": "object",
+                "properties": {
+                    "fullname": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "confirm_password": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "full_name",
+                    "email",
+                    "password",
+                    "confirm_password"
+                ]
+            },
+            "RequestPrompt": {
+                "type": "object",
+                "properties": {
+                    "category": {
+                        "type": "string"
+                    },
+                    "Question": {
+                        "type": "string",
+                        "enum": [
+                            "sampah plastik",
+                            "sampah organik"
+                        ]
+                    }
+                },
+                "required": [
+                    "category",
+                    "question"
+                ]
+            },
+            "RequestLogin": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "email",
+                    "password"
+                ]
+            },
+            "ResponseReport": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "report_type": {
+                        "type": "string",
+                        "enum": [
+                            "tumpukan sampah",
+                            "pelanggaran sampah"
+                        ]
+                    },
+                    "location": {
+                        "type": "string"
+                    },
+                    "date_time": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "perlu ditinjau",
+                            "diterima",
+                            "ditolak"
+                        ]
+                    }
+                }
+            },
+            "ResponsesReportDetail": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "report_type": {
+                        "type": "string",
+                        "enum": [
+                            "tumpukan sampah",
+                            "pelanggaran sampah"
+                        ]
+                    },
+                    "trash_type": {
+                        "type": "string",
+                        "enum": [
+                            "sampah kering",
+                            "sampah basah"
+                        ]
+                    },
+                    "scala_type": {
+                        "type": "string",
+                        "enum": [
+                            "skala besar",
+                            "skala kecil"
+                        ]
+                    },
+                    "reporter": {
+                        "type": "string"
+                    },
+                    "location": {
+                        "type": "string"
+                    },
+                    "benchmark": {
+                        "type": "string"
+                    },
+                    "time_incident": {
+                        "type": "string"
+                    },
+                    "company information": {
+                        "type": "string"
+                    },
+                    "danger_trash": {
+                        "type": "boolean"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "images": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "date_time": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string",
+                        "enum": [
+                            "perlu tinjauan",
+                            "diterima",
+                            "ditolak"
+                        ]
+                    }
+                }
+            },
+            "RequesAndResponseUpdateReport": {
+                "type": "object",
+                "properties": {
+                    "status": {
+                        "type": "string"
+                    },
+                    "reason": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ResponsePromptDetail": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "question": {
+                        "type": "string"
+                    },
+                    "category": {
+                        "type": "string",
+                        "enum": [
+                            "sampah organik",
+                            "sampah plastik"
+                        ]
+                    }
+                }
+            },
+            "ResponsePrompts": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "question": {
+                        "type": "string"
+                    },
+                    "category": {
+                        "type": "string",
+                        "enum": [
+                            "sampah organik",
+                            "sampah plastik"
+                        ]
+                    }
+                }
+            },
+            "RequestResponseDataUser": {
+                "type": "object",
+                "properties": {
+                    "fullname": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "date_of_birth": {
+                        "type": "string"
+                    },
+                    "point": {
+                        "type": "integer"
+                    },
+                    "phone": {
+                        "type": "string"
+                    },
+                    "address": {
+                        "type": "string"
+                    },
+                    "purpose": {
+                        "type": "string"
+                    }
+                }
+            },
+            "RequestReportingUser": {
+                "type": "object",
+                "properties": {
+                    "report_type": {
+                        "type": "string",
+                        "enum": [
+                            "tumpukan sampah",
+                            "pelanggaran sampah"
+                        ]
+                    },
+                    "scale_type": {
+                        "type": "string",
+                        "enum": [
+                            "skala kecil",
+                            "skala besar"
+                        ]
+                    },
+                    "location": {
+                        "type": "string"
+                    },
+                    "longitude": {
+                        "type": "number"
+                    },
+                    "latitude": {
+                        "type": "number"
+                    },
+                    "address_point": {
+                        "type": "string"
+                    },
+                    "insident_date": {
+                        "type": "string"
+                    },
+                    "insident_time": {
+                        "type": "string"
+                    },
+                    "company_name": {
+                        "type": "string"
+                    },
+                    "dangerous_waste": {
+                        "type": "boolean"
+                    },
+                    "trash_type": {
+                        "type": "string",
+                        "enum": [
+                            "sampah kering",
+                            "sampah basah"
+                        ]
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "images": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "binary"
+                        },
+                        "nullable": false
+                    }
+                },
+                "required": [
+                    "images",
+                    "description",
+                    "address_point",
+                    "latitude",
+                    "longitude",
+                    "location",
+                    "report_type"
+                ]
+            },
+            "ResponseVoucher": {
+                "type": "object",
+                "properties": {
+                    "image": {
+                        "type": "string",
+                        "format": "binary"
+                    },
+                    "reward_name": {
+                        "type": "string"
+                    },
+                    "point": {
+                        "type": "integer"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "start_date": {
+                        "type": "string",
+                        "format": "Date"
+                    },
+                    "end_date": {
+                        "type": "string",
+                        "format": "Date"
+                    },
+                    "pagination": {
+                        "type": "object",
+                        "properties": {
+                            "last_page": {
+                                "type": "string"
+                            },
+                            "current_page": {
+                                "type": "string"
+                            },
+                            "limit": {
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    "count_data": {
+                        "type": "string"
+                    }
+                }
+            },
+            "RequestMissionUser": {
+                "type": "object",
+                "properties": {
+                    "mission_id": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "images": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "binary"
+                        },
+                        "nullable": false
+                    }
+                },
+                "required": [
+                    "mission_id",
+                    "description",
+                    "images"
+                ]
+            },
+            "RequestUpdateMissionUser": {
+                "type": "object",
+                "properties": {
+                    "description": {
+                        "type": "string"
+                    },
+                    "images": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "format": "binary"
+                        },
+                        "nullable": false
+                    }
+                },
+                "required": [
+                    "mission_id",
+                    "description",
+                    "images"
+                ]
+            },
+            "ResponseMission": {
+                "type": "object",
+                "properties": {
+                    "mission_id": {
+                        "type": "string"
+                    },
+                    "claimed_id": {
+                        "type": "string"
+                    },
+                    "transaction_id": {
+                        "type": "string"
+                    },
+                    "user_id": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "status_approval": {
+                        "type": "string"
+                    },
+                    "status_mission": {
+                        "type": "string"
+                    },
+                    "reason": {
+                        "type": "string"
+                    },
+                    "point": {
+                        "type": "integer"
+                    },
+                    "start_date": {
+                        "type": "string"
+                    },
+                    "end_date": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string"
+                    },
+                    "updated_at": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ResponseDetailHistoriesMission": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "string"
+                    },
+                    "user_id": {
+                        "type": "string"
+                    },
+                    "user": {
+                        "type": "string"
+                    },
+                    "mission_id": {
+                        "type": "string"
+                    },
+                    "mission_name": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "reason": {
+                        "type": "string"
+                    },
+                    "images": {
+                        "type": "object",
+                        "properties": {
+                            "id": {
+                                "type": "string"
+                            },
+                            "upload_mission_task_id": {
+                                "type": "string"
+                            },
+                            "image": {
+                                "type": "string"
+                            },
+                            "created_at": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string"
+                    },
+                    "updated_at": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ResponseTrashCategories": {
+                "type": "object",
+                "properties": {
+                    "trash_type": {
+                        "type": "string"
+                    },
+                    "unit": {
+                        "type": "string",
+                        "enum": [
+                            "barang",
+                            "kilogram"
+                        ]
+                    },
+                    "pagination": {
+                        "type": "object",
+                        "properties": {
+                            "last_page": {
+                                "type": "string"
+                            },
+                            "current_page": {
+                                "type": "string"
+                            },
+                            "limit": {
+                                "type": "integer"
+                            }
+                        }
+                    },
+                    "count_data": {
+                        "type": "string"
+                    }
+                }
+            },
+            "ResponseCommunity": {
+                "type": "object",
+                "properties": {
+                    
+                    "name": {
+                        "type": "string"
+                    },
+                    "location": {
+                        "type": "string"
+                    },
+                    "created_at": {
+                        "type": "string"
+                    },
+                    "pagination":{
+                        "type": "object",
+                        "properties": {
+                            "limit":{
+                                "type": "integer"
+                            },
+                            "current_page":{
+                                "type": "integer"
+                            },
+                            "last_page":{
+                                "type": "integer"
+                            }
+                            
+                        }
+                    },
+                    "count_data":{
+                        "type": "integer"
+                    }
+                }
+            },
+            "ResponseEvent": {
+                "type": "object",
+                "properties": {
+                    
+                    "communityId": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "quote": {
+                        "type": "integer"
+                    },
+                    "date": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "pagination":{
+                        "type": "object",
+                        "properties": {
+                            "limit":{
+                                "type": "integer"
+                            },
+                            "current_page":{
+                                "type": "integer"
+                            },
+                            "last_page":{
+                                "type": "integer"
+                            }
+                            
+                        }
+                    },
+                    "count":{
+                        "type": "object",
+                        "properties": {
+                            "total_count":{
+                                "type": "string"
+                            },
+                            "total_pending":{
+                                "type": "string"
+                            },
+                            "total_active":{
+                                "type": "string"
+                            },
+                            "total_finished":{
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "token": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "Authorization"
+            }
+        }
+    }
+}

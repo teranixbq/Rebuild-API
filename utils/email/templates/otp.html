@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Template Email OTP</title>
+<style>
+  .email-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    background-color: #f7f7f7;
+    border: 1px solid #dddddd;
+    border-radius: 8px;
+    text-align: center;
+  }
+  .otp-value {
+    font-size: 24px;
+    margin: 20px 0;
+    padding: 10px;
+    border: 1px solid #dddddd;
+    display: inline-block;
+    background-color: #ffffff;
+  }
+  .footer {
+    font-size: 12px;
+    color: #888888;
+    margin-top: 20px;
+  }
+</style>
+</head>
+<body>
+<div class="email-container">
+  <h2>Password Sekali Pakai (OTP) Anda</h2>
+  <p>Gunakan OTP berikut untuk menyelesaikan proses Anda. OTP ini valid selama 5 menit.</p>
+  <div class="otp-value">{{.Otp}}</div>
+  <p>Jika Anda tidak meminta kode ini, silakan abaikan email ini.</p>
+  <div class="footer">
+    &copy; 2023 RecyThing. Semua hak cipta dilindungi.
+  </div>
+</div>
+</body>
+</html>
+
