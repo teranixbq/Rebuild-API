@@ -28,7 +28,7 @@ jobs:
             go build -o rebuild main.go
             ./rebuild
 
-     - name: Verify server
+      - name: Verify server
         run: |
           curl -X GET http://[::]:8091
           if [[ $? -eq 0 ]]; then
