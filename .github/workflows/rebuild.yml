@@ -21,11 +21,9 @@ jobs:
           key: ${{ secrets.KEY }}
           port: ${{ secrets.SSH_PORT }}
           script: |
+            stop-rebuild
             export PATH=$PATH:/usr/local/go/bin
             cd juang/Rebuild-API
             git pull origin main
             go build -o rebuild main.go
             ./rebuild
-            
-      - name: Exit the workflow (success)
-        run: exit 0 
