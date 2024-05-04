@@ -1,6 +1,7 @@
 package route
 
 import (
+	"recything/app/database"
 	adminHandler "recything/features/admin/handler"
 	adminRepository "recything/features/admin/repository"
 	adminService "recything/features/admin/service"
@@ -13,17 +14,19 @@ import (
 	recybotRepository "recything/features/recybot/repository"
 	recybotService "recything/features/recybot/service"
 
-	achievement"recything/features/achievement/repository"
+	achievement "recything/features/achievement/repository"
 
 	"recything/utils/jwt"
 
-	"github.com/labstack/echo/v4"
-	"gorm.io/gorm"
-	supabase "github.com/supabase-community/storage-go"
 	"recything/utils/storage"
+
+	"github.com/labstack/echo/v4"
+	supabase "github.com/supabase-community/storage-go"
+	"github.com/redis/go-redis/v9"
+	"gorm.io/gorm"
 )
 
-func RouteAdmin(e *echo.Group, db *gorm.DB,sb *supabase.Client) {
+func RouteAdmin(e *echo.Group, db *gorm.DB,sb *supabase.Client, rdb *redis.Client) {
 	supabaseConfig := storage.NewStorage(sb)
 	// import user
 	achievementRepository := achievement.NewAchievementRepository(db)
@@ -37,7 +40,8 @@ func RouteAdmin(e *echo.Group, db *gorm.DB,sb *supabase.Client) {
 	adminHandler := adminHandler.NewAdminHandler(adminService, userService)
 
 	//manage prompt
-	recybotRepository := recybotRepository.NewRecybotRepository(db)
+	redisDB := database.NewRedis(rdb)
+	recybotRepository := recybotRepository.NewRecybotRepository(db,redisDB)
 	recybotService := recybotService.NewRecybotService(recybotRepository)
 	recybotHandler := recybotHandler.NewRecybotHandler(recybotService)
 

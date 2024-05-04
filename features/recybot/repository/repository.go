@@ -2,6 +2,8 @@ package repository
 
 import (
 	"errors"
+	"log"
+	"recything/app/database"
 	"recything/features/recybot/entity"
 	"recything/features/recybot/model"
 	"recything/utils/constanta"
@@ -15,7 +17,8 @@ import (
 )
 
 type recybotRepository struct {
-	db *gorm.DB
+	db  *gorm.DB
+	rdb *database.Redis
 }
 
 // GetAllHistory implements entity.RecybotRepositoryInterface.
@@ -30,9 +33,10 @@ func (rb *recybotRepository) GetAllHistory(userId string) ([]entity.RecybbotHist
 	return result, nil
 }
 
-func NewRecybotRepository(db *gorm.DB) entity.RecybotRepositoryInterface {
+func NewRecybotRepository(db *gorm.DB, rdb *database.Redis) entity.RecybotRepositoryInterface {
 	return &recybotRepository{
-		db: db,
+		db:  db,
+		rdb: rdb,
 	}
 }
 
@@ -45,6 +49,24 @@ func (rb *recybotRepository) Create(recybot entity.RecybotCore) (entity.RecybotC
 	}
 
 	result := entity.ModelRecybotToCoreRecybot(input)
+
+	go func() {
+		errDel := rb.rdb.DelString("prompt")
+		if errDel != nil {
+			log.Println(errDel)
+		}
+
+		resultGet, errGet := rb.GetAll()
+		if errGet != nil {
+			log.Println(errGet)
+		}
+
+		errSet := rb.rdb.SetString("prompt", resultGet)
+		if errSet != nil {
+			log.Println(errSet)
+		}
+	}()
+
 	return result, nil
 }
 
@@ -167,12 +189,21 @@ func (rb *recybotRepository) GetCountAllData(search string, filter string) (help
 
 func (rb *recybotRepository) GetAll() ([]entity.RecybotCore, error) {
 	dataRecybots := []model.Recybot{}
+	log.Println("enter")
+	errRDB := rb.rdb.GetString("prompt", &dataRecybots)
+	if errRDB != nil {
+		tx := rb.db.Find(&dataRecybots)
+		if tx.Error != nil {
+			return []entity.RecybotCore{}, tx.Error
+		}
 
-	tx := rb.db.Find(&dataRecybots)
-	if tx.Error != nil {
-		return []entity.RecybotCore{}, tx.Error
+		log.Println("data from db")
+		result := entity.ListModelRecybotToCoreRecybot(dataRecybots)
+		
+		return result, nil
 	}
 
+	log.Println("data from redis")
 	result := entity.ListModelRecybotToCoreRecybot(dataRecybots)
 	return result, nil
 }
