@@ -13,6 +13,8 @@ type RecybotRepositoryInterface interface {
 	GetById(idData string) (RecybotCore, error)
 	FindAll(page, limit int, filter, search string) ([]RecybotCore, pagination.PageInfo, helper.CountPrompt, error)
 	GetCountAllData(search, filter string) (helper.CountPrompt, error)
+	InsertHistory(userId, answer, question string) error
+	GetAllHistory(userId string) (RecybbotHistories, error)
 }
 
 type RecybotServiceInterface interface {
@@ -20,6 +22,6 @@ type RecybotServiceInterface interface {
 	UpdateData(idData string, data RecybotCore) (RecybotCore, error)
 	DeleteData(idData string) error
 	GetById(idData string) (RecybotCore, error)
-	GetPrompt(question string) (string, error)
+	GetPrompt(userId, question string) (string, error)
 	FindAllData(filter, search, page, limit string) ([]RecybotCore, pagination.PageInfo, helper.CountPrompt, error)
 }

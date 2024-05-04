@@ -62,7 +62,7 @@ func (rh *recybotHandler) GetAllData(e echo.Context) error {
 	filter := e.QueryParam("filter")
 	search := e.QueryParam("search")
 
-	result, pagnation, count, err := rh.RecybotService.FindAllData(filter,search,page,limit)
+	result, pagnation, count, err := rh.RecybotService.FindAllData(filter, search, page, limit)
 	if err != nil {
 		if strings.Contains(err.Error(), constanta.ERROR_INVALID_TYPE) {
 			return e.JSON(http.StatusBadRequest, helper.ErrorResponse(err.Error()))
@@ -162,7 +162,7 @@ func (rh *recybotHandler) RecyBotChat(e echo.Context) error {
 	}
 
 	request := request.RequestRecybotToCoreRecybot(input)
-	result, err := rh.RecybotService.GetPrompt(request.Question)
+	result, err := rh.RecybotService.GetPrompt(idUser, request.Question)
 	if err != nil {
 		return e.JSON(http.StatusBadRequest, helper.ErrorResponse(err.Error()))
 	}

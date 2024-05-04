@@ -8,12 +8,28 @@ import (
 	"recything/utils/helper"
 	"recything/utils/pagination"
 	"strings"
+	"time"
 
+	"github.com/google/uuid"
 	"gorm.io/gorm"
 )
 
 type recybotRepository struct {
 	db *gorm.DB
+}
+
+// GetAllHistory implements entity.RecybotRepositoryInterface.
+func (rb *recybotRepository) GetAllHistory(userId string) (entity.RecybbotHistories, error) {
+	var hst model.RecybotHistory
+
+	err := rb.db.Where("user_id = ?", userId).Find(&hst).Error
+	if err != nil {
+		return entity.RecybbotHistories{}, err
+	}
+	return entity.RecybbotHistories{
+		Question: hst.Question,
+		Answer:   hst.Answer,
+	}, nil
 }
 
 func NewRecybotRepository(db *gorm.DB) entity.RecybotRepositoryInterface {
@@ -207,4 +223,23 @@ func (rb *recybotRepository) Delete(idData string) error {
 	}
 
 	return nil
+}
+
+// InsertHistory implements entity.RecybotRepositoryInterface.
+func (rb *recybotRepository) InsertHistory(userId, answer, question string) error {
+	history := model.RecybotHistory{
+		ID:        uuid.New().String(),
+		Question:  question,
+		UserId:    userId,
+		Answer:    answer,
+		CreatedAt: time.Time{},
+		DeletedAt: gorm.DeletedAt{},
+	}
+
+	err := rb.db.Create(&history).Error
+	if err != nil {
+		return err
+	}
+	return nil
+
 }

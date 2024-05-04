@@ -100,7 +100,7 @@ func (rb *recybotService) UpdateData(idData string, data entity.RecybotCore) (en
 	return result, nil
 }
 
-func (rb *recybotService) GetPrompt(question string) (string, error) {
+func (rb *recybotService) GetPrompt(userId, question string) (string, error) {
 	godotenv.Load()
 
 	resultChan := make(chan map[string][]string)
@@ -120,6 +120,10 @@ func (rb *recybotService) GetPrompt(question string) (string, error) {
 
 		resultChan <- output
 	}()
+	histories, err := rb.recybotRepository.GetAllHistory(userId)
+	if err != nil {
+		return "", err
+	}
 
 	select {
 	case output := <-resultChan:
@@ -142,6 +146,14 @@ func (rb *recybotService) GetPrompt(question string) (string, error) {
 			},
 			{
 				Role:    "user",
+				Content: histories.Question,
+			},
+			{
+				Role:    "user",
+				Content: histories.Answer,
+			},
+			{
+				Role:    "user",
 				Content: question,
 			},
 		}
@@ -158,6 +170,10 @@ func (rb *recybotService) GetPrompt(question string) (string, error) {
 		}
 
 		answer := response.Choices[0].Message.Content
+		err = rb.recybotRepository.InsertHistory(userId, answer, question)
+		if err != nil {
+			return "", err
+		}
 		return answer, nil
 
 	case err := <-errChan:

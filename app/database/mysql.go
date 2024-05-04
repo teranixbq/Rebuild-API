@@ -42,7 +42,7 @@ func InitMigrationMysql(db *gorm.DB) {
 	db.AutoMigrate(&user.Users{}, &user.UserDailyPoints{}, &user.UserCommunity{})
 	db.AutoMigrate(&admin.Admin{})
 	db.AutoMigrate(&report.Report{}, &report.Image{})
-	db.AutoMigrate(&recybot.Recybot{})
+	db.AutoMigrate(&recybot.Recybot{}, &recybot.RecybotHistory{})
 	db.AutoMigrate(&faq.Faq{})
 	db.AutoMigrate(&trashCategory.TrashCategory{})
 	db.AutoMigrate(&voucher.Voucher{}, &voucher.ExchangeVoucher{})
@@ -50,6 +50,6 @@ func InitMigrationMysql(db *gorm.DB) {
 	db.AutoMigrate(&daily.DailyPoint{})
 	db.AutoMigrate(&dropPoint.DropPoints{}, &dropPoint.Schedules{})
 	db.AutoMigrate(&trashExchange.TrashExchange{}, trashExchange.TrashExchangeDetail{})
-	db.AutoMigrate(&mission.Mission{},&mission.ClaimedMission{}) //&mission.MissionStage{}, )
+	db.AutoMigrate(&mission.Mission{}, &mission.ClaimedMission{}) //&mission.MissionStage{}, )
 	db.AutoMigrate(&community.Community{}, &community.CommunityEvent{})
 }

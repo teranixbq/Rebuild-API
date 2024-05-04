@@ -8,3 +8,5 @@ type RecybotResponse struct {
 	Question  string    `json:"question"`
 	CreatedAt time.Time `json:"created_at"`
 }
+
+
