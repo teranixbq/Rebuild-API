@@ -14,7 +14,7 @@ type RecybotRepositoryInterface interface {
 	FindAll(page, limit int, filter, search string) ([]RecybotCore, pagination.PageInfo, helper.CountPrompt, error)
 	GetCountAllData(search, filter string) (helper.CountPrompt, error)
 	InsertHistory(userId, answer, question string) error
-	GetAllHistory(userId string) (RecybbotHistories, error)
+	GetAllHistory(userId string) ([]RecybbotHistories, error)
 }
 
 type RecybotServiceInterface interface {

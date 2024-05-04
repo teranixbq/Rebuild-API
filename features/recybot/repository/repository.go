@@ -19,17 +19,15 @@ type recybotRepository struct {
 }
 
 // GetAllHistory implements entity.RecybotRepositoryInterface.
-func (rb *recybotRepository) GetAllHistory(userId string) (entity.RecybbotHistories, error) {
-	var hst model.RecybotHistory
+func (rb *recybotRepository) GetAllHistory(userId string) ([]entity.RecybbotHistories, error) {
+	var hst []model.RecybotHistory
 
 	err := rb.db.Where("user_id = ?", userId).Find(&hst).Error
 	if err != nil {
-		return entity.RecybbotHistories{}, err
+		return []entity.RecybbotHistories{}, err
 	}
-	return entity.RecybbotHistories{
-		Question: hst.Question,
-		Answer:   hst.Answer,
-	}, nil
+	result:= entity.ListModelRecyHistoryToEntityRecyHistory(hst)
+	return result, nil
 }
 
 func NewRecybotRepository(db *gorm.DB) entity.RecybotRepositoryInterface {
@@ -227,13 +225,17 @@ func (rb *recybotRepository) Delete(idData string) error {
 
 // InsertHistory implements entity.RecybotRepositoryInterface.
 func (rb *recybotRepository) InsertHistory(userId, answer, question string) error {
-	history := model.RecybotHistory{
-		ID:        uuid.New().String(),
-		Question:  question,
-		UserId:    userId,
-		Answer:    answer,
-		CreatedAt: time.Time{},
-		DeletedAt: gorm.DeletedAt{},
+	var history model.RecybotHistory
+	history.ID = uuid.New().String()
+	history.Question = question
+	history.UserId = userId
+	history.CreatedAt = time.Time{}
+	history.DeletedAt = gorm.DeletedAt{}
+	// history.teks = question + answer
+	if strings.Contains(answer, "Maaf") {
+		history.Answer = ""
+	} else {
+		history.Answer = answer
 	}
 
 	err := rb.db.Create(&history).Error
@@ -241,5 +243,4 @@ func (rb *recybotRepository) InsertHistory(userId, answer, question string) erro
 		return err
 	}
 	return nil
-
 }

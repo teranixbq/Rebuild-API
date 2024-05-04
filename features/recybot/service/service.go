@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
 	"recything/features/recybot/entity"
@@ -125,6 +126,19 @@ func (rb *recybotService) GetPrompt(userId, question string) (string, error) {
 		return "", err
 	}
 
+
+	// for _, v:= range histories{
+	// 	data := map[string]interface{}{
+	// 		"question": v.Question,
+	// 		"answer":   v.Answer,
+	// 	}
+	// }
+	
+	jsonByte, _ := json.Marshal(histories)
+	jsonString := string(jsonByte)
+
+	fmt.Println(jsonString)
+
 	select {
 	case output := <-resultChan:
 		var prompt strings.Builder
@@ -146,11 +160,7 @@ func (rb *recybotService) GetPrompt(userId, question string) (string, error) {
 			},
 			{
 				Role:    "user",
-				Content: histories.Question,
-			},
-			{
-				Role:    "user",
-				Content: histories.Answer,
+				Content: jsonString,
 			},
 			{
 				Role:    "user",
