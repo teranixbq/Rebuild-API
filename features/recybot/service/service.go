@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"recything/features/recybot/dto/response"
 	"recything/features/recybot/entity"
 	"recything/utils/constanta"
 	"recything/utils/helper"
@@ -121,20 +122,11 @@ func (rb *recybotService) GetPrompt(userId, question string) (string, error) {
 
 		resultChan <- output
 	}()
-	histories, err := rb.recybotRepository.GetAllHistory(userId)
-	if err != nil {
-		return "", err
-	}
+	histories, _ := rb.recybotRepository.GetAllHistory(userId)
 
 
-	// for _, v:= range histories{
-	// 	data := map[string]interface{}{
-	// 		"question": v.Question,
-	// 		"answer":   v.Answer,
-	// 	}
-	// }
-	
-	jsonByte, _ := json.Marshal(histories)
+	responseHistory := response.ListCoreRecybotHistoryToResponse(histories)
+	jsonByte, _ := json.Marshal(responseHistory)
 	jsonString := string(jsonByte)
 
 	fmt.Println(jsonString)
@@ -180,7 +172,11 @@ func (rb *recybotService) GetPrompt(userId, question string) (string, error) {
 		}
 
 		answer := response.Choices[0].Message.Content
-		err = rb.recybotRepository.InsertHistory(userId, answer, question)
+		dataHistory := entity.RecybotHistories{}
+		dataHistory.Answer = answer
+		dataHistory.Question = question
+		dataHistory.UserId = userId
+		err = rb.recybotRepository.InsertHistory(dataHistory)
 		if err != nil {
 			return "", err
 		}

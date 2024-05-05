@@ -19,3 +19,20 @@ func ListCoreRecybotToCoreRecybot(recybot []entity.RecybotCore) []RecybotRespons
 	}
 	return list
 }
+
+func CoreRecybotHistoryToResponse(recybot entity.RecybotHistories) RecybotHistoryResponse {
+	return RecybotHistoryResponse{
+		UserId:   recybot.UserId,
+		Question: recybot.Question,
+		Answer:   recybot.Answer,
+	}
+}
+
+func ListCoreRecybotHistoryToResponse(recybot []entity.RecybotHistories) []RecybotHistoryResponse{
+	list := []RecybotHistoryResponse{}
+	for _,v := range recybot{
+		result := CoreRecybotHistoryToResponse(v)
+		list = append(list, result)
+	}
+	return list
+}
