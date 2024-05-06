@@ -65,6 +65,10 @@ jobs:
             -e EMAIL_FROM=${{ secrets.EMAIL_FROM }} \
             -e EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }} \
             -e EMAIL_PORT=${{ secrets.EMAIL_PORT }} \
-            -e OPEN_AI_KEY=${{ secrets.OPEN_AI_KEY }} --name rebuildcontainer ${{ secrets.DOCKERHUB_USERNAME }}/rebuild:latest
+            -e RDB_ADDR=${{ secrets.RDB_ADDR }} \
+            -e RDB_USER=${{ secrets.RDB_USER }} \
+            -e RDB_PASS=${{ secrets.RDB_PASS }} \
+            -e OPEN_AI_KEY=${{ secrets.OPEN_AI_KEY }} --name rebuildcontainer ${{ secrets.DOCKERHUB_USERNAME }}/rebuild:latest 
+            
 
   
