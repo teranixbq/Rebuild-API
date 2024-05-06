@@ -36,3 +36,29 @@ func ListModelRecybotToCoreRecybot(recybot []model.Recybot) []RecybotCore {
 	}
 	return list
 }
+
+func RecybotHistoryCoreToModelRecyHistory(recybot RecybotHistories) model.RecybotHistory{
+	return model.RecybotHistory{
+		Question: recybot.Question,
+		Answer: recybot.Answer,
+		UserId: recybot.UserId,
+	}
+}
+
+func ModelRecyHistoryToEntityRecyHistory(recybot model.RecybotHistory)RecybotHistories{
+	return RecybotHistories{
+		ID: recybot.ID,
+		Question: recybot.Question,
+		Answer: recybot.Answer,
+		UserId: recybot.UserId,
+		CreatedAt: recybot.CreatedAt,
+	}
+}
+func ListModelRecyHistoryToEntityRecyHistory(r []model.RecybotHistory)[]RecybotHistories{
+	list := []RecybotHistories{}
+	for _, v := range r {
+		result := ModelRecyHistoryToEntityRecyHistory(v)
+		list = append(list, result)
+	}
+	return list
+}

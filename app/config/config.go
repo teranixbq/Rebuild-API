@@ -3,7 +3,6 @@ package config
 import (
 	"os"
 	"strconv"
-
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 )
@@ -16,7 +15,11 @@ type AppConfig struct {
 	DBPASS      string
 	DBNAME      string
 	API_STORAGE string
+	RDB_ADDR    string
+	RDB_USER    string
+	RDB_PASS    string
 }
+
 
 func InitConfig() *AppConfig {
 	var res = new(AppConfig)
@@ -68,9 +71,17 @@ func loadConfig() *AppConfig {
 	if val, found := os.LookupEnv("DBNAME"); found {
 		res.DBNAME = val
 	}
-	if val,found := os.LookupEnv("API_STORAGE"); found {
+	if val, found := os.LookupEnv("API_STORAGE"); found {
 		res.API_STORAGE = val
 	}
+	if val, found := os.LookupEnv("RDB_ADDR"); found {
+		res.RDB_ADDR = val
+	}
+	if val, found := os.LookupEnv("RDB_USER"); found {
+		res.RDB_USER = val
+	}
+	if val, found := os.LookupEnv("RDB_PASS"); found {
+		res.RDB_PASS = val
+	}
 	return res
-
 }

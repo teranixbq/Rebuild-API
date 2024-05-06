@@ -2,8 +2,10 @@ package service
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"os"
+	"recything/features/recybot/dto/response"
 	"recything/features/recybot/entity"
 	"recything/utils/constanta"
 	"recything/utils/helper"
@@ -100,7 +102,7 @@ func (rb *recybotService) UpdateData(idData string, data entity.RecybotCore) (en
 	return result, nil
 }
 
-func (rb *recybotService) GetPrompt(question string) (string, error) {
+func (rb *recybotService) GetPrompt(userId, question string) (string, error) {
 	godotenv.Load()
 
 	resultChan := make(chan map[string][]string)
@@ -120,6 +122,14 @@ func (rb *recybotService) GetPrompt(question string) (string, error) {
 
 		resultChan <- output
 	}()
+	histories, _ := rb.recybotRepository.GetAllHistory(userId)
+
+
+	responseHistory := response.ListCoreRecybotHistoryToResponse(histories)
+	jsonByte, _ := json.Marshal(responseHistory)
+	jsonString := string(jsonByte)
+
+	fmt.Println(jsonString)
 
 	select {
 	case output := <-resultChan:
@@ -142,6 +152,10 @@ func (rb *recybotService) GetPrompt(question string) (string, error) {
 			},
 			{
 				Role:    "user",
+				Content: jsonString,
+			},
+			{
+				Role:    "user",
 				Content: question,
 			},
 		}
@@ -158,6 +172,14 @@ func (rb *recybotService) GetPrompt(question string) (string, error) {
 		}
 
 		answer := response.Choices[0].Message.Content
+		dataHistory := entity.RecybotHistories{}
+		dataHistory.Answer = answer
+		dataHistory.Question = question
+		dataHistory.UserId = userId
+		err = rb.recybotRepository.InsertHistory(dataHistory)
+		if err != nil {
+			return "", err
+		}
 		return answer, nil
 
 	case err := <-errChan:

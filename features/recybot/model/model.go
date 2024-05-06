@@ -16,7 +16,22 @@ type Recybot struct {
 	DeletedAt gorm.DeletedAt `gorm:"index"`
 }
 
+type RecybotHistory struct {
+	ID        string `gorm:"primary key"`
+	Question  string `gorm:"not null"`
+	UserId    string
+	Answer    string
+	CreatedAt time.Time
+	DeletedAt gorm.DeletedAt `gorm:"index"`
+}
+
 func (r *Recybot) BeforeCreate(tx *gorm.DB) (err error) {
+	newUuid := uuid.New()
+	r.ID = newUuid.String()
+	return nil
+}
+
+func (r *RecybotHistory) BeforeCreate(tx *gorm.DB) (err error) {
 	newUuid := uuid.New()
 	r.ID = newUuid.String()
 	return nil

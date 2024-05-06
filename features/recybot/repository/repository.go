@@ -2,6 +2,8 @@ package repository
 
 import (
 	"errors"
+	"log"
+	"recything/app/database"
 	"recything/features/recybot/entity"
 	"recything/features/recybot/model"
 	"recything/utils/constanta"
@@ -13,12 +15,15 @@ import (
 )
 
 type recybotRepository struct {
-	db *gorm.DB
+	db  *gorm.DB
+	rdb *database.Redis
 }
 
-func NewRecybotRepository(db *gorm.DB) entity.RecybotRepositoryInterface {
+
+func NewRecybotRepository(db *gorm.DB, rdb *database.Redis) entity.RecybotRepositoryInterface {
 	return &recybotRepository{
-		db: db,
+		db:  db,
+		rdb: rdb,
 	}
 }
 
@@ -31,6 +36,24 @@ func (rb *recybotRepository) Create(recybot entity.RecybotCore) (entity.RecybotC
 	}
 
 	result := entity.ModelRecybotToCoreRecybot(input)
+
+	go func() {
+		errDel := rb.rdb.DelString("prompt")
+		if errDel != nil {
+			log.Println(errDel)
+		}
+
+		resultGet, errGet := rb.GetAll()
+		if errGet != nil {
+			log.Println(errGet)
+		}
+
+		errSet := rb.rdb.SetString("prompt", resultGet)
+		if errSet != nil {
+			log.Println(errSet)
+		}
+	}()
+
 	return result, nil
 }
 
@@ -154,11 +177,25 @@ func (rb *recybotRepository) GetCountAllData(search string, filter string) (help
 func (rb *recybotRepository) GetAll() ([]entity.RecybotCore, error) {
 	dataRecybots := []model.Recybot{}
 
-	tx := rb.db.Find(&dataRecybots)
-	if tx.Error != nil {
-		return []entity.RecybotCore{}, tx.Error
+	errRDB := rb.rdb.GetString("prompt", &dataRecybots)
+	if errRDB != nil {
+		tx := rb.db.Find(&dataRecybots)
+		if tx.Error != nil {
+			return []entity.RecybotCore{}, tx.Error
+		}
+
+		errSet := rb.rdb.SetString("prompt", dataRecybots)
+		if errSet != nil {
+			return nil, errSet
+		}
+
+		log.Println("data from db")
+		result := entity.ListModelRecybotToCoreRecybot(dataRecybots)
+
+		return result, nil
 	}
 
+	log.Println("data from redis")
 	result := entity.ListModelRecybotToCoreRecybot(dataRecybots)
 	return result, nil
 }
@@ -205,6 +242,64 @@ func (rb *recybotRepository) Delete(idData string) error {
 	if tx.RowsAffected == 0 {
 		return errors.New(constanta.ERROR_DATA_ID)
 	}
+
+	return nil
+}
+
+
+func (rb *recybotRepository) GetAllHistory(userId string) ([]entity.RecybotHistories, error) {
+	dataHistory := []model.RecybotHistory{}
+
+	// Implement redis history
+	errGet := rb.rdb.GetString("history."+userId, &dataHistory)
+	if errGet != nil {
+		err := rb.db.Where("user_id = ?", userId).Find(&dataHistory).Error
+		if err != nil {
+			return []entity.RecybotHistories{}, err
+		}
+
+		errSet := rb.rdb.SetString("history."+userId,dataHistory)
+		if errSet != nil {
+			return nil,errSet
+		}
+		
+		result := entity.ListModelRecyHistoryToEntityRecyHistory(dataHistory)
+		return result, nil
+	}
+
+	log.Println("Data from redis history")
+	result := entity.ListModelRecyHistoryToEntityRecyHistory(dataHistory)
+	return result, nil
+}
+
+func (rb *recybotRepository) InsertHistory(history entity.RecybotHistories) error {
+	input := entity.RecybotHistoryCoreToModelRecyHistory(history)
+
+	if strings.Contains(input.Answer, "Maaf") {
+		input.Answer = ""
+	}
+
+	err := rb.db.Create(&input).Error
+	if err != nil {
+		return err
+	}
+
+	go func() {
+		errDel := rb.rdb.DelString("history."+history.UserId)
+		if errDel != nil {
+			log.Println(errDel)
+		}
+
+		resultGet, errGet := rb.GetAllHistory(history.UserId)
+		if errGet != nil {
+			log.Println(errGet)
+		}
+
+		errSet := rb.rdb.SetString("history."+history.UserId, resultGet)
+		if errSet != nil {
+			log.Println(errSet)
+		}
+	}()
 
 	return nil
 }

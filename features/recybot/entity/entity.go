@@ -10,3 +10,11 @@ type RecybotCore struct {
 	UpdatedAt time.Time
 }
 
+type RecybotHistories struct {
+	ID        string 
+	Question  string 
+	UserId    string
+	Answer    string
+	CreatedAt time.Time
+}
+
