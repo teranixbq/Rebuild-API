@@ -28,5 +28,9 @@ func main() {
 		Format: `[${time_rfc3339}] ${status} ${method} ${host}${path} ${latency_human}` + "\n",
 	}))
 
-	e.Logger.Fatal(e.Start(fmt.Sprintf(":%d", cfg.SERVERPORT)))
+	port := cfg.SERVERPORT
+	if port == 0 {
+		port = 8000
+	}
+	e.Logger.Fatal(e.Start(fmt.Sprintf(":%d", port)))
 }
