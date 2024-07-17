@@ -8,8 +8,7 @@ const (
 )
 
 const (
-	URL_STORAGE = "https://cimxqffotlogzqvadisz.supabase.co/storage/v1"
-	URL         = URL_STORAGE + "/object/public/"
+	URL         = "https://storage.recything.my.id/"
 )
 
 
