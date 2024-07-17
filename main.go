@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"recything/app/config"
 	"recything/app/database"
 	"recything/app/route"
@@ -20,12 +19,11 @@ func main() {
 	database.InitMigrationMysql(dbMysql)
 	supabase := storage.InitStorage(cfg)
 	redis := database.InitRedis(cfg)
-	log.Print(cfg.API_STORAGE)
 
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.CORS())
 
-	route.New(e, dbMysql,supabase,redis)
+	route.New(e, dbMysql, supabase, redis)
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: `[${time_rfc3339}] ${status} ${method} ${host}${path} ${latency_human}` + "\n",
 	}))

@@ -15,11 +15,11 @@ import (
 	"recything/utils/storage"
 
 	"github.com/labstack/echo/v4"
-	supabase "github.com/supabase-community/storage-go"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"gorm.io/gorm"
 )
 
-func RouteMissions(e *echo.Group, db *gorm.DB, sb *supabase.Client) {
+func RouteMissions(e *echo.Group, db *gorm.DB, sb *s3.Client) {
 	supabaseConfig := storage.NewStorage(sb)
 
 	adminRepository := admin.NewAdminRepository(db, supabaseConfig)

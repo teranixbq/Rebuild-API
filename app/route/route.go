@@ -2,12 +2,12 @@ package route
 
 import (
 	"github.com/labstack/echo/v4"
-	supabase "github.com/supabase-community/storage-go"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"gorm.io/gorm"
 	"github.com/redis/go-redis/v9"
 )
 
-func New(e *echo.Echo, db *gorm.DB, sb *supabase.Client, rdb *redis.Client) {
+func New(e *echo.Echo, db *gorm.DB, sb *s3.Client, rdb *redis.Client) {
 	base := e.Group("")
 	loginPage := e.Group("/")
 	user := e.Group("/users")

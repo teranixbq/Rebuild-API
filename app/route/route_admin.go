@@ -21,12 +21,12 @@ import (
 	"recything/utils/storage"
 
 	"github.com/labstack/echo/v4"
-	supabase "github.com/supabase-community/storage-go"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/redis/go-redis/v9"
 	"gorm.io/gorm"
 )
 
-func RouteAdmin(e *echo.Group, db *gorm.DB,sb *supabase.Client, rdb *redis.Client) {
+func RouteAdmin(e *echo.Group, db *gorm.DB,sb *s3.Client, rdb *redis.Client) {
 	supabaseConfig := storage.NewStorage(sb)
 	// import user
 	achievementRepository := achievement.NewAchievementRepository(db)
