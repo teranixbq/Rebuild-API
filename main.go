@@ -9,6 +9,9 @@ import (
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"strconv"
+	"os"
+	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -22,15 +25,17 @@ func main() {
 
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.CORS())
-
+	
 	route.New(e, dbMysql, supabase, redis)
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format: `[${time_rfc3339}] ${status} ${method} ${host}${path} ${latency_human}` + "\n",
 	}))
 
-	port := cfg.SERVERPORT
-	if port == 0 {
-		port = 8000
+	godotenv.Load()
+	port, _ := strconv.Atoi(os.Getenv("SERVERPORT"))
+
+	if port == "" {
+		port = "8081"
 	}
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%d", port)))
 }
