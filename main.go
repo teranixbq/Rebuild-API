@@ -34,8 +34,8 @@ func main() {
 	godotenv.Load()
 	port, _ := strconv.Atoi(os.Getenv("SERVERPORT"))
 
-	if port == "" {
-		port = "8081"
+	if port == 0 {
+		port = 8081
 	}
 	e.Logger.Fatal(e.Start(fmt.Sprintf(":%d", port)))
 }
