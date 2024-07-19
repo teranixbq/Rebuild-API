@@ -1,16 +1,11 @@
 FROM golang:1.20-alpine AS builder
-
 WORKDIR /app
-COPY go.mod go.sum ./
-RUN go mod download
 COPY . .
+RUN go mod download
 RUN go build -o main .
 
-######## Start a new stage from scratch #######
-FROM alpine:latest  
-
-WORKDIR /root/
-COPY --from=builder /app/main .
-
+FROM alpine:latest AS runner
+WORKDIR /app
+COPY --from=builder /app/ .
 EXPOSE 8081
-CMD ["./main"]
+ENTRYPOINT ["./main"]
